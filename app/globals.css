@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================= */
+/* 🌗 Theme Colors: Light & Dark */
+/* ============================= */
+
+@font-face {
+  font-family: "Araboto";
+  src: url("/fonts/Araboto/Araboto Thin.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Araboto";
+  src: url("/fonts/Araboto/Araboto Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Araboto";
+  src: url("/fonts/Araboto/Araboto Normal.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Araboto";
+  src: url("/fonts/Araboto/Araboto Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Araboto";
+  src: url("/fonts/Araboto/Araboto Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Araboto";
+  src: url("/fonts/Araboto/Araboto Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* @font-face {
+  font-family: "Eastman Roman";
+  src: url("/fonts/eastman-roman.ttf") format("truetype");
+  font-weight: 700;
+  font-display: swap;
+} */
+
+@layer base {
+  :root {
+    /* Background & Foreground */
+    --background: 0 0% 100%; /* white */
+    --foreground: 0 0% 7%; /* #121212 */
+
+    /* Main Surfaces */
+    --card: 0 0% 100%; /* white */
+    --card-foreground: 0 0% 7%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+
+    /* Brand Colors (Tralgo Styleguide) */
+    --primary: 210 85% 52%; /* #1c8fed */
+    --primary-foreground: 0 0% 100%; /* white */
+
+    --accent: 204 85% 42%; /* #127ac2 */
+    --accent-foreground: 0 0% 100%;
+
+    --secondary: 210 30% 96%; /* #f3f4f6 */
+    --secondary-foreground: 0 0% 9%;
+
+    --muted: 210 30% 96%;
+    --muted-foreground: 0 0% 45%;
+
+    --destructive: 0 84% 60%; /* red tone */
+    --destructive-foreground: 0 0% 98%;
+
+    /* UI Controls */
+    --border: 0 0% 85%;
+    --input: 0 0% 89.8%;
+    --ring: 210 85% 52%; /* match primary */
+
+    /* Charts */
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+
+    /* Radius */
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 7%; /* #121212 */
+    --foreground: 0 0% 100%; /* white */
+
+    --card: 0 0% 12%; /* #1e1e1e */
+    --card-foreground: 0 0% 100%;
+
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 100%;
+
+    --primary: 210 85% 52%; /* #1c8fed */
+    --primary-foreground: 0 0% 100%;
+
+    --accent: 204 85% 42%; /* #127ac2 */
+    --accent-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+  }
+}
+
+/* =================== */
+/* 🧱 Base Element Style */
+/* =================== */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}

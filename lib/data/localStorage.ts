@@ -29,12 +29,8 @@ export const AcademyLocalStorageService = {
     },
 
 
-
-
-
-
     // Video löschen
-    deleteVideo: (videoId: string) => {
+    removeVideo: (videoId: string) => {
         const sections = AcademyLocalStorageService.getSections();
         for (const section of sections) {
             const before = section.videos.length;
@@ -43,6 +39,20 @@ export const AcademyLocalStorageService = {
         }
         localStorage.setItem(STORAGE_KEY_ACADEMY_CONTENT, JSON.stringify(sections));
     },
+
+    // Holt ein Video anhand der Video-Id aus dem Local Storage
+    getVideoById: (videoId: string) => {
+        const sections = AcademyLocalStorageService.getSections();
+        for (const section of sections) {
+            const video = section.videos.find((v) => v.id === videoId);
+            if (video) {
+                return video;
+            }
+        }
+        return null;
+    },
+
+
 
     // Video editieren (beliebige Felder, anhand der Id)
     editVideo: (videoId: string, update: Partial<MockDataAcademy>) => {

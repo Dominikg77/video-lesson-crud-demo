@@ -92,7 +92,7 @@ const ButtonBarVideo = ({
               Weiter
             </Button>
           ) : (
-            <Button onClick={onFinish} disabled={!isCompleted} variant="success">
+            <Button onClick={onFinish} disabled={!isCompleted}>
               Finish
             </Button>
           )}

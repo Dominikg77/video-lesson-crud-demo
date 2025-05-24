@@ -7,10 +7,13 @@ export enum AcademyCategory {
 export interface MockDataAcademy {
     id: string;
     orderId: number;
+    sectionId: string;
     title: string;
     description: string;
-    note: string;
     videoUrl: string;
+    isLive: boolean;
+    // Props from User, userData verweiss auf Id from AcademyData ans safe the Date in one place
+    note: string;
     isCompleted: boolean;
 }
 

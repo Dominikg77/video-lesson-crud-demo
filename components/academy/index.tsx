@@ -13,6 +13,19 @@ interface VideoPlayerPageProps {
   category: AcademyCategory;
 }
 
+// Hilfsfunktion: Updated Sections mit aktuellem VideoState mergen
+function mergeSectionsWithVideoStates(sections: AcademySection[], videoStates: MockDataAcademy[]) {
+  // Map für schnellen Zugriff
+  const stateById = Object.fromEntries(videoStates.map((v) => [v.id, v]));
+  return sections.map((section) => ({
+    ...section,
+    videos: section.videos.map((v) => ({
+      ...v,
+      ...stateById[v.id], // aktueller State hat Priorität
+    })),
+  }));
+}
+
 const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
   const [sections, setSections] = useState<AcademySection[]>([]);
   const [videoStates, setVideoStates] = useState<MockDataAcademy[]>([]);
@@ -22,7 +35,14 @@ const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
   // Lade und filtere die Daten nach Kategorie
   useEffect(() => {
     const allSections = AcademyLocalStorageService.getSections();
-    const filtered = allSections.filter((section) => section.category === category);
+    const filtered = allSections
+      .filter((section) => section.category === category)
+      .map((section) => ({
+        ...section,
+        videos: section.videos.filter((video) => video.isLive),
+      }))
+      .filter((section) => section.videos.length > 0);
+      
     setSections(filtered);
   }, [category]);
 
@@ -35,6 +55,9 @@ const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
         .flatMap((section) => section.videos.slice().sort((a, b) => a.orderId - b.orderId)),
     [sections]
   );
+
+  // **Hier entsteht die aktuellste Section-Liste für VideoList!**
+  const mergedSections = useMemo(() => mergeSectionsWithVideoStates(sections, videoStates), [sections, videoStates]);
 
   // Synchronisiere videoStates mit allVideos
   useEffect(() => {
@@ -56,9 +79,7 @@ const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
   const handlePrev = () => setCurrentIndex((i) => Math.max(0, i - 1));
   const handleNext = () => setCurrentIndex((i) => Math.min(videoStates.length - 1, i + 1));
   const handleCheck = (checked: boolean) => {
-    setVideoStates((states) =>
-      states.map((v, idx) => (idx === currentIndex ? { ...v, isCompleted: checked } : v))
-    );
+    setVideoStates((states) => states.map((v, idx) => (idx === currentIndex ? { ...v, isCompleted: checked } : v)));
     // Optional: persistieren im LocalStorage
     AcademyLocalStorageService.setVideoCompleted(currentVideo.id, checked);
   };
@@ -69,13 +90,17 @@ const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
     window.alert("Kurs abgeschlossen!");
   };
 
-
   return (
     <div className="max-w-7xl mx-auto p-4 space-y-4">
       <h1 className="text-3xl font-bold">{currentVideo.title}</h1>
       <div className="flex flex-col space-y-4 lg:hidden">
         <ProgressBar progress={progress} />
-        <VideoList sections={sections} currentVideoIndex={currentIndex} videoList={videoStates} onSelect={(idx) => setCurrentIndex(idx)} />
+        <VideoList
+          sections={mergedSections}
+          currentVideoIndex={currentIndex}
+          videoList={videoStates}
+          onSelect={(idx) => setCurrentIndex(idx)}
+        />
       </div>
       <div className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-6">
         <div className="lg:col-span-8 flex flex-col space-y-4">
@@ -99,7 +124,7 @@ const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
           <ProgressBar progress={progress} />
 
           <VideoList
-            sections={sections}
+            sections={mergedSections}
             currentVideoIndex={currentIndex}
             videoList={videoStates}
             onSelect={(idx) => setCurrentIndex(idx)}

@@ -3,7 +3,7 @@ import "./globals.css";
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants";
 import { ThemeProvider } from "next-themes";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/sideNav/app-sidebar";
+import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import Header from "@/components/header/header";
 
 export const metadata: Metadata = {

@@ -5,6 +5,7 @@ import {
     Package,
     Layers3,
     Edit3,
+    HelpCircle,
 } from "lucide-react"
 import { SectionItem } from "./sideNav.type"
 
@@ -15,4 +16,6 @@ export const additionalSections: SectionItem[] = [
     { name: "Trading Package", url: "#", icon: Package },
     { name: "Add On Wissen", url: "#", icon: Layers3 },
     { name: "Notizen", url: "#", icon: Edit3 },
+    { name: "Hilfe", url: "#", icon: HelpCircle },
+
 ]

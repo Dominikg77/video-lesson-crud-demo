@@ -1,3 +1,5 @@
+import MainAcademy from "@/components/academy";
+
 export const metadata = {
   title: "Intraday Academy",
 };
@@ -5,7 +7,7 @@ export const metadata = {
 const IntraDayAcademy = () => {
   return (
     <>
-      <h1>TGest</h1>
+      <MainAcademy />
     </>
   );
 };

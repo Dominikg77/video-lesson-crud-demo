@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, Home, type LucideIcon } from "lucide-react";
+import { ChevronRight, Home } from "lucide-react";
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
@@ -13,20 +13,12 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { PrimaryMenuSection } from "../data/sideNav.type";
 
 export function PrimaryMenu({
   items,
 }: {
-  items: {
-    title: string;
-    url: string;
-    icon?: LucideIcon;
-    isActive?: boolean;
-    items?: {
-      title: string;
-      url: string;
-    }[];
-  }[];
+  items: PrimaryMenuSection[];
 }) {
   return (
     <SidebarGroup>

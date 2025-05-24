@@ -1,6 +1,4 @@
 "use client"
-
-import { type LucideIcon } from "lucide-react"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -8,15 +6,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { SectionItem } from "../data/sideNav.type"
 
 export function AdditionalSection({
   additionalSections,
 }: {
-  additionalSections: {
-    name: string
-    url: string
-    icon: LucideIcon
-  }[]
+  additionalSections: SectionItem[]
 }) {
   return (
     <SidebarGroup>

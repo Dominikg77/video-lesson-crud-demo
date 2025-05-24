@@ -1,6 +1,5 @@
 "use client"
 
-import { type LucideIcon } from "lucide-react"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -8,15 +7,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { SectionItem } from "../data/sideNav.type"
 
 export function BackOfficeSection({
   backOfficeSection,
 }: {
-  backOfficeSection: {
-    name: string
-    url: string
-    icon: LucideIcon
-  }[]
+  backOfficeSection: SectionItem[]
 }) {
   return (
     <SidebarGroup>

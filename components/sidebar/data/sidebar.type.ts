@@ -19,12 +19,15 @@ export interface PrimaryMenuSection {
     title: string
     url: string
     icon: ComponentType<SVGProps<SVGSVGElement>>
-    isActive?: boolean
     items: MenuItem[]
+    isDisabled: boolean,
+    isDefaultOpen?: boolean
+
 }
 export interface MenuItem {
     title: string
     url: string
+    isDisabled: boolean
 }
 
 /* Extra Section / Back Office */
@@ -33,4 +36,6 @@ export interface SectionItem {
     name: string
     url: string
     icon: ComponentType<SVGProps<SVGSVGElement>>
+    isDisabled: boolean,
+
 }

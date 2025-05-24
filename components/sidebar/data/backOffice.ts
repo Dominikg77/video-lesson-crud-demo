@@ -9,10 +9,10 @@ import {
 import { SectionItem } from "./sidebar.type"
 
 export const backOffice: SectionItem[] = [
-  { name: "Academy", url: "#", icon: BookOpen },
-  { name: "Lessons", url: "#", icon: FileText },
-  { name: "Live Streams", url: "#", icon: Video },
-  { name: "Zahlungen", url: "#", icon: CreditCard },
-  { name: "Web-Tracker", url: "#", icon: BarChart2 },
-  { name: "Settings", url: "#", icon: Settings },
+  { name: "Academy", url: "#", icon: BookOpen, isDisabled: true, },
+  { name: "Lessons", url: "#", icon: FileText, isDisabled: true, },
+  { name: "Live Streams", url: "#", icon: Video, isDisabled: true, },
+  { name: "Zahlungen", url: "#", icon: CreditCard, isDisabled: true, },
+  { name: "Web-Tracker", url: "#", icon: BarChart2, isDisabled: true, },
+  { name: "Settings", url: "#", icon: Settings, isDisabled: true, },
 ]

@@ -27,37 +27,46 @@ function mergeSectionsWithVideoStates(sections: AcademySection[], videoStates: M
 }
 
 const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
+  // Daten einmalig laden!
   const [sections, setSections] = useState<AcademySection[]>([]);
   const [videoStates, setVideoStates] = useState<MockDataAcademy[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeTab, setActiveTab] = useState<"description" | "note">("description");
 
-  // Lade und filtere die Daten nach Kategorie
+  // Daten nur EINMAL holen (beim ersten Render)!
   useEffect(() => {
     const allSections = AcademyLocalStorageService.getSections();
-    const filtered = allSections
+    setSections(allSections);
+  }, []);
+
+  // Kategorie- und Live-Filter im Memo
+  const filteredSections = useMemo(() => {
+    return sections
       .filter((section) => section.category === category)
       .map((section) => ({
         ...section,
         videos: section.videos.filter((video) => video.isLive),
       }))
       .filter((section) => section.videos.length > 0);
-      
-    setSections(filtered);
-  }, [category]);
+  }, [sections, category]);
 
   // Flache Liste aller Videos (sortiert)
   const allVideos = useMemo(
     () =>
-      sections
+      filteredSections
         .slice()
         .sort((a, b) => a.orderId - b.orderId)
-        .flatMap((section) => section.videos.slice().sort((a, b) => a.orderId - b.orderId)),
-    [sections]
+        .flatMap((section) =>
+          section.videos.slice().sort((a, b) => a.orderId - b.orderId)
+        ),
+    [filteredSections]
   );
 
-  // **Hier entsteht die aktuellste Section-Liste für VideoList!**
-  const mergedSections = useMemo(() => mergeSectionsWithVideoStates(sections, videoStates), [sections, videoStates]);
+  // Hier entsteht die aktuellste Section-Liste für VideoList!
+  const mergedSections = useMemo(
+    () => mergeSectionsWithVideoStates(filteredSections, videoStates),
+    [filteredSections, videoStates]
+  );
 
   // Synchronisiere videoStates mit allVideos
   useEffect(() => {
@@ -67,7 +76,7 @@ const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
     setCurrentIndex(firstIncompleteIndex !== -1 ? firstIncompleteIndex : 0);
   }, [allVideos]);
 
-  if (sections.length === 0 || videoStates.length === 0) {
+  if (filteredSections.length === 0 || videoStates.length === 0) {
     return <div className="max-w-7xl mx-auto p-4">No data available</div>;
   }
 
@@ -79,7 +88,11 @@ const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
   const handlePrev = () => setCurrentIndex((i) => Math.max(0, i - 1));
   const handleNext = () => setCurrentIndex((i) => Math.min(videoStates.length - 1, i + 1));
   const handleCheck = (checked: boolean) => {
-    setVideoStates((states) => states.map((v, idx) => (idx === currentIndex ? { ...v, isCompleted: checked } : v)));
+    setVideoStates((states) =>
+      states.map((v, idx) =>
+        idx === currentIndex ? { ...v, isCompleted: checked } : v
+      )
+    );
     // Optional: persistieren im LocalStorage
     AcademyLocalStorageService.setVideoCompleted(currentVideo.id, checked);
   };
@@ -118,11 +131,14 @@ const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
             tabValue={activeTab}
             onTabChange={handleTabChange}
           />
-          <ContentVideo description={currentVideo.description} note={currentVideo.note} activeTab={activeTab} />
+          <ContentVideo
+            description={currentVideo.description}
+            note={currentVideo.note}
+            activeTab={activeTab}
+          />
         </div>
         <div className="lg:col-span-4 mt-6 lg:mt-0 hidden lg:flex flex-col space-y-4">
           <ProgressBar progress={progress} />
-
           <VideoList
             sections={mergedSections}
             currentVideoIndex={currentIndex}

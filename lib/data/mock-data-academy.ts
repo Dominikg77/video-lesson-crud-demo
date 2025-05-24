@@ -15,7 +15,7 @@ export const mockSections: AcademySection[] = [
                 description: "<h3>Was ist der Demand Index</h3><p>Der Demand Index ist ein technischer Indikator, der das Verhältnis von Angebot und Nachfrage auf dem Markt misst. Er wird verwendet, um potenzielle Umkehrpunkte im Preisverlauf zu identifizieren und die Stärke eines Trends zu bewerten.</p>",
                 note: "Muss ich Researchen, damit ich es in meinem Setup verwenden kann",
                 videoUrl: "https://www.youtube.com/embed/q0Yo8lvsr4E",
-                isCompleted: true,
+                isCompleted: false,
                 isLive: true,
             },
             {
@@ -72,4 +72,35 @@ export const mockSections: AcademySection[] = [
             },
         ],
     },
+    {
+        id: "scalping-basics",
+        title: "Scalping Basics",
+        orderId: 2,
+        category: AcademyCategory.Scalping,
+        videos: [
+            {
+                id: crypto.randomUUID(),
+                orderId: 1,
+                sectionId: "scalping-basics",
+                title: "Vergleich: Das beste Finanzinstrument für Daytrading.",
+                description: "Jedes Haus ist nur so sicher, wie das Fundament auf dem es gebaut wurde. Deshalb ist entscheidend, dass Du Dich zu Beginn Deiner Trading-Karriere mit den verschiedenen Finanzinstrumenten, ihren Vorteilen und  Nachteilen beschäftigst. Dabei gilt es vor allem die Umsetzbarkeit und Risiken abzuwiegen.",
+                note: "asdasdsad",
+                videoUrl: "https://www.youtube.com/embed/SxFZsn3gp3g",
+                isCompleted: false,
+                isLive: true,
+            },
+            {
+                id: crypto.randomUUID(),
+                orderId: 1,
+                sectionId: "scalping-basics",
+                title: "Mein Trading-Workspace: Monitore, Tools und ATAS Einstellungen auf Deutsch.",
+                description: "Eugen, wie sieht der perfekte Trading-Workspace aus für Daytrader?“",
+                note: "asdasdsad",
+                videoUrl: "https://www.youtube.com/embed/HFWlZoRb8t4",
+                isCompleted: false,
+                isLive: true,
+            },
+        ],
+    },
+
 ];

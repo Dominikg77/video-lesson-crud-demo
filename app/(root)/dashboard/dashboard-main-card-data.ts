@@ -1,4 +1,4 @@
-import { IntraDayRoutes } from "@/lib/constants/route-constant";
+import { IntraDayRoutes, ScalpingRoutes } from "@/lib/constants/route-constant";
 
 export interface DashboardCardData {
     title: string;
@@ -15,7 +15,7 @@ export const dashboardMainCards: DashboardCardData[] = [
     {
         title: "Scalping",
         description: "Scalping Strategien für schnelle Trades und hohe Frequenz.",
-        link: "/scalping"
+        link: ScalpingRoutes.academy
     },
     {
         title: "Masterclass",

@@ -1,7 +1,5 @@
 const Test = () => {
-    return ( <>
-    Page Content
-    </> );
-}
- 
+  return <>Page Content</>;
+};
+
 export default Test;

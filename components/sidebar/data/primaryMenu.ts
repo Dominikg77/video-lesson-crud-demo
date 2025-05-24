@@ -7,8 +7,8 @@ import {
   PencilRuler,
   Star,
 } from "lucide-react"
-import { PrimaryMenuSection } from "./sideNav.type"
 import { IntraDayRoutes } from "@/lib/constants/route-constant"
+import { PrimaryMenuSection } from "./sidebar.type"
 
 export const primaryMenu: PrimaryMenuSection[] = [
   {

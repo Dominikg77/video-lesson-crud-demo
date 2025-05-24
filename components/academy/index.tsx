@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { AcademySection } from "@/app/(root)/intraday/academy/mock-data-intraday";
 import ButtonBarVideo from "./button-bar";
 import ContentVideo from "./content";
 import ProgressBar from "./progressbar";
 import VideoEmbed from "./video-embed";
 import VideoList from "./video-list";
+import { AcademySection } from "@/lib/data/academy-type";
 
 const VideoPlayerPage = ({ data }: { data: AcademySection[] }) => {
   const sections = useMemo(() => data.slice().sort((a, b) => a.orderId - b.orderId), [data]);

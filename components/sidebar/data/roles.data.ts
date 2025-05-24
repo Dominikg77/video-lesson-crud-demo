@@ -1,6 +1,6 @@
 import { GraduationCap, Command, Code, UserCog, UserPen } from "lucide-react"
-import { Role } from "./sideNav.type"
-import {  RolesConst } from "@/lib/constants/roles-package"
+import { RolesConst } from "@/lib/constants/roles-package"
+import { Role } from "./sidebar.type"
 
 
 export const roles: Role[] = [
@@ -10,7 +10,7 @@ export const roles: Role[] = [
         plan: "Masterclass",
         role: RolesConst.Students,
     },
-     {
+    {
         name: "Support",
         logo: UserCog,
         plan: "Support",

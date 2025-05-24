@@ -48,7 +48,7 @@ const VideoList: React.FC<VideoListProps> = ({ sections, currentVideoIndex, vide
             return (
               <li key={section.id}>
                 <details open={isOpen} className="group">
-                  <summary className="flex items-center cursor-pointer select-none font-medium text-base text-white group-open:text-primary transition-colors">
+                  <summary className="flex items-center cursor-pointer select-none font-medium text-base  group-open:text-primary transition-colors">
                     <ChevronDown className={`mr-1 h-4 w-4 transition-transform group-open:rotate-180`} />
                     {section.title}
                   </summary>
@@ -67,13 +67,13 @@ const VideoList: React.FC<VideoListProps> = ({ sections, currentVideoIndex, vide
                             onClick={() => isSelectable && onSelect(idx)}
                             className={`flex items-center w-full text-left rounded px-2 py-1 transition ${
                               isCurrent
-                                ? "bg-primary text-white font-semibold"
+                                ? "bg-primary font-semibold"
                                 : isSelectable
-                                ? "text-white hover:bg-primary/80"
+                                ? " hover:bg-primary/80"
                                 : "text-muted-foreground cursor-not-allowed"
                             }`}>
                             {isCompleted ? (
-                              <CheckCircle className="w-4 h-4 text-white mr-2" />
+                              <CheckCircle className="w-4 h-4 mr-2" />
                             ) : (
                               <Circle className="w-4 h-4 text-muted-foreground mr-2" />
                             )}

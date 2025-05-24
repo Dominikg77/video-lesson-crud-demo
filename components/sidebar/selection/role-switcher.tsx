@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
-import { Role } from "../data/sideNav.type";
+import { Role } from "../data/sidebar.type";
 
 export function RoleSwitcher({ roles }: { roles: Role[] }) {
   const { isMobile } = useSidebar();

@@ -1,5 +1,6 @@
 import MainAcademy from "@/components/academy";
-import { AcademyCategory, mockSections } from "./mock-data-intraday";
+import { AcademyCategory } from "@/lib/data/academy-type";
+import { mockSections } from "@/lib/data/mock-data-academy";
 
 export const metadata = {
   title: "Intraday Academy",

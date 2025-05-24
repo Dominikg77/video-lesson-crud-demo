@@ -6,7 +6,7 @@ import {
   BarChart2,
   Settings,
 } from "lucide-react"
-import { SectionItem } from "./sideNav.type"
+import { SectionItem } from "./sidebar.type"
 
 export const backOffice: SectionItem[] = [
   { name: "Academy", url: "#", icon: BookOpen },

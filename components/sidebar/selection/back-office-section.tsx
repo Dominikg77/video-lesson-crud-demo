@@ -1,7 +1,7 @@
 "use client";
 
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
-import { SectionItem } from "../data/sideNav.type";
+import { SectionItem } from "../data/sidebar.type";
 
 export function BackOfficeSection({ title, backOfficeSection }: { title: string; backOfficeSection: SectionItem[] }) {
   return (

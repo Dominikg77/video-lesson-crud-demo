@@ -7,7 +7,7 @@ import {
     Edit3,
     HelpCircle,
 } from "lucide-react"
-import { SectionItem } from "./sideNav.type"
+import { SectionItem } from "./sidebar.type"
 
 export const additionalSections: SectionItem[] = [
     { name: "Analytics", url: "#", icon: BarChart2 },

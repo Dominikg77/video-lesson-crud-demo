@@ -1,12 +1,12 @@
 import { IntraDayRoutes } from "@/lib/constants/route-constant";
 
-export interface DashboardCardData  {
+export interface DashboardCardData {
     title: string;
     description: string;
     link: string;
 }
 
-export const dashboardMainCards: DashboardCardData [] = [
+export const dashboardMainCards: DashboardCardData[] = [
     {
         title: "Intraday",
         description: "Lerne die Grundlagen des Intraday Tradings und wie du erfolgreich in Echtzeit handelst.",

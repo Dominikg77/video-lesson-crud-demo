@@ -13,10 +13,10 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { PrimaryMenuSection } from "../data/sideNav.type";
 import Link from "next/link";
+import { PrimaryMenuSection } from "../data/sidebar.type";
 
-export function PrimaryMenu({ title ,items }: { title:string, items: PrimaryMenuSection[] }) {
+export function PrimaryMenu({ title, items }: { title: string; items: PrimaryMenuSection[] }) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{title}</SidebarGroupLabel>

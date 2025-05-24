@@ -1,6 +1,6 @@
 "use client";
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
-import { SectionItem } from "../data/sideNav.type";
+import { SectionItem } from "../data/sidebar.type";
 
 export function AdditionalSection({ title, additionalSections }: { title: string; additionalSections: SectionItem[] }) {
   return (

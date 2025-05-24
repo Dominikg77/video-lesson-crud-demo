@@ -9,40 +9,49 @@ interface ButtonBarVideoProps {
   isCompleted: boolean;
   onPrev: () => void;
   onNext: () => void;
+  onFinish: () => void;
   disablePrev?: boolean;
   disableNext?: boolean;
+  isLast?: boolean;
   onCheck?: (checked: boolean) => void;
+  tabValue: "description" | "note";
+  onTabChange: (value: "description" | "note") => void;
 }
 
 const ButtonBarVideo = ({
   isCompleted,
   onPrev,
   onNext,
+  onFinish,
   disablePrev,
   disableNext,
+  isLast,
   onCheck,
+  tabValue,
+  onTabChange,
 }: ButtonBarVideoProps) => {
-  // Kein eigener useState!
   const handleCheckboxChange = (checked: boolean) => {
     onCheck?.(checked);
   };
 
-  const handleNextClick = () => {
-    console.log("Weiter geklickt");
-    onNext();
+  // Tab-Wechsel
+  const handleTabsValueChange = (value: string) => {
+    if (value === "description" || value === "note") {
+      onTabChange(value);
+    }
   };
 
+  // Desktop-Layout
   return (
     <>
-      {/* Desktop-Layout */}
       <div className="hidden sm:flex flex-row items-center justify-between gap-4 w-full">
         <Button variant="outline" onClick={onPrev} disabled={disablePrev}>
           Zurück
         </Button>
-        <Tabs defaultValue="beschreibung" className="flex-1">
+        <Tabs value={tabValue} onValueChange={handleTabsValueChange} className="flex-1">
           <TabsList className="flex flex-row w-full justify-center gap-4">
-            <TabsTrigger value="beschreibung">Beschreibung</TabsTrigger>
-            <TabsTrigger value="notiz">Notiz</TabsTrigger>
+            <TabsTrigger value="description">Beschreibung</TabsTrigger>
+            <TabsTrigger value="note">Notiz</TabsTrigger>
           </TabsList>
         </Tabs>
         <div className="flex items-center gap-3">
@@ -54,9 +63,15 @@ const ButtonBarVideo = ({
           <label htmlFor="isCompleted" className="cursor-pointer select-none">
             Abgeschlossen
           </label>
-          <Button onClick={handleNextClick} disabled={!isCompleted}>
-            Weiter
-          </Button>
+          {!isLast ? (
+            <Button onClick={onNext} disabled={!isCompleted || disableNext}>
+              Weiter
+            </Button>
+          ) : (
+            <Button onClick={onFinish} disabled={!isCompleted}>
+              Finish
+            </Button>
+          )}
         </div>
       </div>
 
@@ -76,14 +91,20 @@ const ButtonBarVideo = ({
               Abgeschlossen
             </label>
           </div>
-          <Button onClick={handleNextClick} disabled={!isCompleted}>
-            Weiter
-          </Button>
+          {!isLast ? (
+            <Button onClick={onNext} disabled={!isCompleted || disableNext}>
+              Weiter
+            </Button>
+          ) : (
+            <Button onClick={onFinish} disabled={!isCompleted} variant="success">
+              Finish
+            </Button>
+          )}
         </div>
-        <Tabs defaultValue="beschreibung" className="w-full sm:flex-1">
+        <Tabs value={tabValue} onValueChange={handleTabsValueChange} className="w-full sm:flex-1">
           <TabsList className="flex justify-center gap-4 whitespace-nowrap overflow-x-auto">
-            <TabsTrigger value="beschreibung">Beschreibung</TabsTrigger>
-            <TabsTrigger value="notiz">Notiz</TabsTrigger>
+            <TabsTrigger value="description">Beschreibung</TabsTrigger>
+            <TabsTrigger value="note">Notiz</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>

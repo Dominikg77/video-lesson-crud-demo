@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { AcademySection, MockDataAcademy } from "@/app/(root)/intraday/academy/mock-data-intraday";
+import { AcademySection } from "@/app/(root)/intraday/academy/mock-data-intraday";
 import ButtonBarVideo from "./button-bar";
 import ContentVideo from "./content";
 import ProgressBar from "./progressbar";
@@ -18,37 +18,40 @@ const VideoPlayerPage = ({ data }: { data: AcademySection[] }) => {
     [data]
   );
 
-  // State für das komplette Video-Array (inkl. aktuellem isCompleted pro Video)
   const [videoStates, setVideoStates] = useState(allVideos);
-
-  // Finde Index des ersten nicht abgeschlossenen Videos
-  const firstIncompleteIndex = videoStates.findIndex(v => !v.isCompleted);
+  const firstIncompleteIndex = videoStates.findIndex((v) => !v.isCompleted);
   const initialIndex = firstIncompleteIndex !== -1 ? firstIncompleteIndex : 0;
-
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
+
+  // Tab-State
+  const [activeTab, setActiveTab] = useState<"description" | "note">("description");
 
   if (!data || data.length === 0 || videoStates.length === 0) {
     return <div className="max-w-7xl mx-auto p-4">No data available</div>;
   }
 
-  // Progress berechnen
   const completedCount = videoStates.filter((v) => v.isCompleted).length;
   const progress = Math.round((completedCount / videoStates.length) * 100);
 
   const currentVideo = videoStates[currentIndex];
 
-  // Handler fürs Navigieren
   const handlePrev = () => setCurrentIndex((i) => Math.max(0, i - 1));
   const handleNext = () => setCurrentIndex((i) => Math.min(videoStates.length - 1, i + 1));
-
-  // Checkbox-Handler
   const handleCheck = (checked: boolean) => {
-    setVideoStates((states) =>
-      states.map((v, idx) =>
-        idx === currentIndex ? { ...v, isCompleted: checked } : v
-      )
-    );
+    setVideoStates((states) => states.map((v, idx) => (idx === currentIndex ? { ...v, isCompleted: checked } : v)));
   };
+
+  // Tab Change
+  const handleTabChange = (value: "description" | "note") => {
+    setActiveTab(value);
+  };
+
+  // Finish Handler
+  const handleFinish = () => {
+    window.alert("Kurs abgeschlossen!");
+  };
+
+  const isLastVideo = currentIndex === videoStates.length - 1;
 
   return (
     <div className="max-w-7xl mx-auto p-4 space-y-4">
@@ -64,11 +67,19 @@ const VideoPlayerPage = ({ data }: { data: AcademySection[] }) => {
             isCompleted={currentVideo.isCompleted}
             onPrev={handlePrev}
             onNext={handleNext}
+            onFinish={handleFinish}
             disablePrev={currentIndex === 0}
-            disableNext={currentIndex === videoStates.length - 1}
+            disableNext={isLastVideo}
+            isLast={isLastVideo}
             onCheck={handleCheck}
+            tabValue={activeTab}
+            onTabChange={handleTabChange}
           />
-          <ContentVideo description={currentVideo.description} note={currentVideo.note} />
+          <ContentVideo
+            description={currentVideo.description}
+            note={currentVideo.note}
+            activeTab={activeTab}
+          />
         </div>
         <div className="lg:col-span-4 mt-6 lg:mt-0 hidden lg:flex flex-col space-y-4">
           <ProgressBar progress={progress} />

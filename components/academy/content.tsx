@@ -1,17 +1,17 @@
 import { Card, CardContent } from "@/components/ui/card";
 
-const ContentVideo = ({ description, note }: { description: string; note: string }) => {
-  return (
-    <Card>
-      <CardContent className="p-4">
+const ContentVideo = ({ description, note, activeTab }: { description: string; note: string; activeTab: "description" | "note" }) => (
+  <Card>
+    <CardContent className="p-4">
+      {activeTab === "description" ? (
         <div>
-          des: <span dangerouslySetInnerHTML={{ __html: description }} />
-          <br />
-          note: {note}
+          <span dangerouslySetInnerHTML={{ __html: description }} />
         </div>
-      </CardContent>
-    </Card>
-  );
-};
+      ) : (
+        <div>{note}</div>
+      )}
+    </CardContent>
+  </Card>
+);
 
 export default ContentVideo;

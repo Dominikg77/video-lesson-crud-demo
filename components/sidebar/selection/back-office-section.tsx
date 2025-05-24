@@ -20,7 +20,7 @@ export function BackOfficeSection({
       <SidebarMenu>
         {backOfficeSection.map((item) => (
           <SidebarMenuItem key={item.name}>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton asChild tooltip={item.name}>
               <a href={item.url} className="flex items-center gap-2">
                 <item.icon />
                 <span>{item.name}</span>

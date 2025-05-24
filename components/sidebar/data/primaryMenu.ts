@@ -8,7 +8,7 @@ import {
   Star,
 } from "lucide-react"
 import { PrimaryMenuSection } from "./sideNav.type"
-import { IntraDayRoutes } from "@/lib/route-constant"
+import { IntraDayRoutes } from "@/lib/constants/route-constant"
 
 export const primaryMenu: PrimaryMenuSection[] = [
   {

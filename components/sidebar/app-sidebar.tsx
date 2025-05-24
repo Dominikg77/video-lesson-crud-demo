@@ -58,9 +58,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenu>
         </SidebarGroup>
 
-        <PrimaryMenu items={primaryMenu} />
-        <AdditionalSection additionalSections={additionalSections} />
-        <BackOfficeSection backOfficeSection={backOffice} />
+        <PrimaryMenu title="Deine Bereiche" items={primaryMenu} />
+        <AdditionalSection title="Extras & Tools" additionalSections={additionalSections} />
+        <BackOfficeSection title="Back Office" backOfficeSection={backOffice} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />

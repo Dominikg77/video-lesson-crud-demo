@@ -1,4 +1,4 @@
-import { IntraDayRoutes } from "@/lib/route-constant";
+import { IntraDayRoutes } from "@/lib/constants/route-constant";
 
 export interface DashboardCardData  {
     title: string;

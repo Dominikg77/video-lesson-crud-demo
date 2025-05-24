@@ -1,22 +1,12 @@
-"use client"
+"use client";
 
-import {
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { SectionItem } from "../data/sideNav.type"
+import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { SectionItem } from "../data/sideNav.type";
 
-export function BackOfficeSection({
-  backOfficeSection,
-}: {
-  backOfficeSection: SectionItem[]
-}) {
+export function BackOfficeSection({ title, backOfficeSection }: { title: string; backOfficeSection: SectionItem[] }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Back Office</SidebarGroupLabel>
+      <SidebarGroupLabel>{title}</SidebarGroupLabel>
       <SidebarMenu>
         {backOfficeSection.map((item) => (
           <SidebarMenuItem key={item.name}>
@@ -30,5 +20,5 @@ export function BackOfficeSection({
         ))}
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }

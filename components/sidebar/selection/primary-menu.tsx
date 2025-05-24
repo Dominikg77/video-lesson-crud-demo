@@ -16,10 +16,10 @@ import {
 import { PrimaryMenuSection } from "../data/sideNav.type";
 import Link from "next/link";
 
-export function PrimaryMenu({ items }: { items: PrimaryMenuSection[] }) {
+export function PrimaryMenu({ title ,items }: { title:string, items: PrimaryMenuSection[] }) {
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Deine Bereiche</SidebarGroupLabel>
+      <SidebarGroupLabel>{title}</SidebarGroupLabel>
 
       <SidebarMenu>
         {items.map((item) => (

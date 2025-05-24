@@ -1,3 +1,4 @@
+import { RoleName } from "@/lib/constants/roles-package"
 import type { ComponentType, SVGProps } from "react"
 
 // Type definitions for the sidebar navigation components
@@ -10,6 +11,7 @@ export interface Role {
     name: string
     logo: ComponentType<SVGProps<SVGSVGElement>>
     plan: string
+    role: RoleName
 }
 
 
@@ -27,7 +29,7 @@ export interface MenuItem {
 
 /* Extra Section / Back Office */
 
-export interface SectionItem { 
+export interface SectionItem {
     name: string
     url: string
     icon: ComponentType<SVGProps<SVGSVGElement>>

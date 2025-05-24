@@ -11,7 +11,6 @@ const ButtonBarVideo = () => {
           <TabsList className="flex flex-row w-full justify-center gap-4">
             <TabsTrigger value="beschreibung">Beschreibung</TabsTrigger>
             <TabsTrigger value="notiz">Notiz</TabsTrigger>
-            <TabsTrigger value="fragen">Fragen</TabsTrigger>
           </TabsList>
         </Tabs>
         <Button>Weiter</Button>
@@ -32,7 +31,6 @@ const ButtonBarVideo = () => {
           <TabsList className="flex justify-center gap-4 whitespace-nowrap overflow-x-auto">
             <TabsTrigger value="beschreibung">Beschreibung</TabsTrigger>
             <TabsTrigger value="notiz">Notiz</TabsTrigger>
-            <TabsTrigger value="fragen">Fragen</TabsTrigger>
           </TabsList>
         </Tabs>
       </div>

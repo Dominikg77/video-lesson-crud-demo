@@ -9,7 +9,6 @@ import VideoList from "./video-list";
 import { AcademyCategory, AcademySection, MockDataAcademy } from "@/lib/data/academy-type";
 import { AcademyLocalStorageService } from "@/lib/data/localStorage";
 
-
 // Hilfsfunktion: Updated Sections mit aktuellem VideoState mergen
 function mergeSectionsWithVideoStates(sections: AcademySection[], videoStates: MockDataAcademy[]) {
   // Map für schnellen Zugriff
@@ -69,7 +68,7 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
   }, [allVideos]);
 
   if (filteredSections.length === 0 || videoStates.length === 0) {
-    return <div className="max-w-7xl mx-auto p-4">No data available</div>;
+    return <div className="w-full mx-auto p-4">No data available</div>;
   }
 
   const completedCount = videoStates.filter((v) => v.isCompleted).length;
@@ -92,7 +91,7 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 space-y-4">
+    <div className="w-full max-w-[2400px] mx-auto p-4 space-y-4">
       <h1 className="text-3xl font-bold">{currentVideo.title}</h1>
       <div className="flex flex-col space-y-4 lg:hidden">
         <ProgressBar progress={progress} />

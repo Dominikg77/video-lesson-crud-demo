@@ -9,6 +9,8 @@ import VideoEmbed from "./video-embed";
 import VideoList from "./video-list";
 
 const VideoPlayerPage = ({ data }: { data: AcademySection[] }) => {
+  const sections = useMemo(() => data.slice().sort((a, b) => a.orderId - b.orderId), [data]);
+
   const allVideos = useMemo(
     () =>
       data
@@ -58,7 +60,7 @@ const VideoPlayerPage = ({ data }: { data: AcademySection[] }) => {
       <h1 className="text-3xl font-bold">{currentVideo.title}</h1>
       <div className="flex flex-col space-y-4 lg:hidden">
         <ProgressBar progress={progress} />
-        <VideoList />
+        <VideoList sections={sections} currentVideoIndex={currentIndex} videoList={videoStates} onSelect={(idx) => setCurrentIndex(idx)} />
       </div>
       <div className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-6">
         <div className="lg:col-span-8 flex flex-col space-y-4">
@@ -75,15 +77,17 @@ const VideoPlayerPage = ({ data }: { data: AcademySection[] }) => {
             tabValue={activeTab}
             onTabChange={handleTabChange}
           />
-          <ContentVideo
-            description={currentVideo.description}
-            note={currentVideo.note}
-            activeTab={activeTab}
-          />
+          <ContentVideo description={currentVideo.description} note={currentVideo.note} activeTab={activeTab} />
         </div>
         <div className="lg:col-span-4 mt-6 lg:mt-0 hidden lg:flex flex-col space-y-4">
           <ProgressBar progress={progress} />
-          <VideoList />
+
+          <VideoList
+            sections={sections}
+            currentVideoIndex={currentIndex}
+            videoList={videoStates}
+            onSelect={(idx) => setCurrentIndex(idx)}
+          />
         </div>
       </div>
     </div>

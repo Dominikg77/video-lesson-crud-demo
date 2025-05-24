@@ -68,7 +68,7 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
   }, [allVideos]);
 
   if (filteredSections.length === 0 || videoStates.length === 0) {
-    return <div className="w-full mx-auto p-4">No data available</div>;
+    return <div className="w-full max-w-[2400px] mx-auto p-4">No data available</div>;
   }
 
   const completedCount = videoStates.filter((v) => v.isCompleted).length;

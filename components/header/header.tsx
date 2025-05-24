@@ -7,7 +7,7 @@ const Header = () => {
       {/* Left Side */}
       <div className="flex items-center gap-2">
         <SidebarTrigger />
-        <span className="text-lg font-semibold">Tralgo Education Plattform</span>
+        <span className="text-lg font-semibold">Education Plattform</span>
         {/* <span className="text-lg font-semibold"> > Breadcrumb...</span> */}
 
       </div>

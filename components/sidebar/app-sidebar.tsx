@@ -29,7 +29,7 @@ const data = {
   user: {
     name: "Dominik Graf",
     email: "dominik.graf2001@gmail.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "",
   },
 };
 

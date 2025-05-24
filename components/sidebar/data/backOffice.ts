@@ -7,9 +7,10 @@ import {
   Settings,
 } from "lucide-react"
 import { SectionItem } from "./sidebar.type"
+import { BackOfficeRoutes } from "@/lib/constants/route-constant"
 
 export const backOffice: SectionItem[] = [
-  { name: "Academy", url: "#", icon: BookOpen, isDisabled: true, },
+  { name: "Academy", url: BackOfficeRoutes.academy, icon: BookOpen, isDisabled: false, },
   { name: "Lessons", url: "#", icon: FileText, isDisabled: true, },
   { name: "Live Streams", url: "#", icon: Video, isDisabled: true, },
   { name: "Zahlungen", url: "#", icon: CreditCard, isDisabled: true, },

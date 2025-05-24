@@ -29,7 +29,7 @@ export function PrimaryMenu({ title, items }: { title: string; items: PrimaryMen
           <Collapsible
             key={item.title}
             asChild
-            defaultOpen={item.items?.some((subItem) => pathname === subItem.url || pathname.startsWith(subItem.url))}
+            open={item.items?.some((subItem) => pathname === subItem.url || pathname.startsWith(subItem.url))}
             className="group/collapsible">
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>

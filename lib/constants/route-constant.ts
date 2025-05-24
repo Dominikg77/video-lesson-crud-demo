@@ -13,3 +13,10 @@ export const ScalpingRoutes = {
     scalping: baseScalping,
     academy: `${baseScalping}/academy`,
 };
+
+
+const baseBackOffice = "/backoffice";
+export const BackOfficeRoutes = {
+    backOffice: baseBackOffice,
+    academy: `${baseBackOffice}/academy`,
+};

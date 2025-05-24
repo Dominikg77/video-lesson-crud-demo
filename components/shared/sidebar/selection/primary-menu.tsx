@@ -19,8 +19,8 @@ import Link from "next/link";
 export function PrimaryMenu({ title, items }: { title: string; items: PrimaryMenuSection[] }) {
   const pathname = usePathname();
 
-  console.log("PrimaryMenu items:", items);
-  console.log("pathname:", pathname);
+  // console.log("PrimaryMenu items:", items);
+  // console.log("pathname:", pathname);
 
   return (
     <SidebarGroup>

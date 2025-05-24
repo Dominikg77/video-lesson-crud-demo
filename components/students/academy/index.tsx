@@ -9,9 +9,6 @@ import VideoList from "./video-list";
 import { AcademyCategory, AcademySection, MockDataAcademy } from "@/lib/data/academy-type";
 import { AcademyLocalStorageService } from "@/lib/data/localStorage";
 
-interface VideoPlayerPageProps {
-  category: AcademyCategory;
-}
 
 // Hilfsfunktion: Updated Sections mit aktuellem VideoState mergen
 function mergeSectionsWithVideoStates(sections: AcademySection[], videoStates: MockDataAcademy[]) {
@@ -26,7 +23,7 @@ function mergeSectionsWithVideoStates(sections: AcademySection[], videoStates: M
   }));
 }
 
-const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
+const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
   // Daten einmalig laden!
   const [sections, setSections] = useState<AcademySection[]>([]);
   const [videoStates, setVideoStates] = useState<MockDataAcademy[]>([]);
@@ -56,17 +53,12 @@ const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
       filteredSections
         .slice()
         .sort((a, b) => a.orderId - b.orderId)
-        .flatMap((section) =>
-          section.videos.slice().sort((a, b) => a.orderId - b.orderId)
-        ),
+        .flatMap((section) => section.videos.slice().sort((a, b) => a.orderId - b.orderId)),
     [filteredSections]
   );
 
   // Hier entsteht die aktuellste Section-Liste für VideoList!
-  const mergedSections = useMemo(
-    () => mergeSectionsWithVideoStates(filteredSections, videoStates),
-    [filteredSections, videoStates]
-  );
+  const mergedSections = useMemo(() => mergeSectionsWithVideoStates(filteredSections, videoStates), [filteredSections, videoStates]);
 
   // Synchronisiere videoStates mit allVideos
   useEffect(() => {
@@ -88,11 +80,7 @@ const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
   const handlePrev = () => setCurrentIndex((i) => Math.max(0, i - 1));
   const handleNext = () => setCurrentIndex((i) => Math.min(videoStates.length - 1, i + 1));
   const handleCheck = (checked: boolean) => {
-    setVideoStates((states) =>
-      states.map((v, idx) =>
-        idx === currentIndex ? { ...v, isCompleted: checked } : v
-      )
-    );
+    setVideoStates((states) => states.map((v, idx) => (idx === currentIndex ? { ...v, isCompleted: checked } : v)));
     // Optional: persistieren im LocalStorage
     AcademyLocalStorageService.setVideoCompleted(currentVideo.id, checked);
   };
@@ -131,11 +119,7 @@ const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
             tabValue={activeTab}
             onTabChange={handleTabChange}
           />
-          <ContentVideo
-            description={currentVideo.description}
-            note={currentVideo.note}
-            activeTab={activeTab}
-          />
+          <ContentVideo description={currentVideo.description} note={currentVideo.note} activeTab={activeTab} />
         </div>
         <div className="lg:col-span-4 mt-6 lg:mt-0 hidden lg:flex flex-col space-y-4">
           <ProgressBar progress={progress} />

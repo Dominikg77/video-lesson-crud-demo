@@ -13,16 +13,16 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { roles } from "./data/roles.data";
-import { primaryMenu } from "./data/primaryMenu";
 import { additionalSections } from "./data/additionalSections";
 import { backOffice } from "./data/backOffice";
 import { RoleSwitcher } from "./selection/role-switcher";
-import { PrimaryMenu } from "./selection/primary-menu";
 import { AdditionalSection } from "./selection/additional-section";
 import { BackOfficeSection } from "./selection/back-office-section";
 import { NavUser } from "./selection/nav-user";
 import { Home } from "lucide-react";
 import Link from "next/link";
+import { PrimaryMenu } from "./selection/primary-menu";
+import { primaryMenu } from "./data/primaryMenu";
 
 // This is sample data.
 const data = {

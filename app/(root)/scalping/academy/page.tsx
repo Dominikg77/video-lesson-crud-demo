@@ -1,4 +1,4 @@
-import MainAcademy from "@/components/academy";
+import MainAcademy from "@/components/students/academy/index";
 import { AcademyCategory } from "@/lib/data/academy-type";
 
 export const metadata = {

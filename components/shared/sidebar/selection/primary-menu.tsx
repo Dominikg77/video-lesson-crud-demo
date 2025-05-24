@@ -1,8 +1,7 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
-
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { usePathname } from "next/navigation";
+import { PrimaryMenuSection } from "../data/sidebar.type";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -13,12 +12,15 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@radix-ui/react-collapsible";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { PrimaryMenuSection } from "../data/sidebar.type";
-import { usePathname } from "next/navigation";
 
 export function PrimaryMenu({ title, items }: { title: string; items: PrimaryMenuSection[] }) {
   const pathname = usePathname();
+
+  console.log("PrimaryMenu items:", items);
+  console.log("pathname:", pathname);
 
   return (
     <SidebarGroup>

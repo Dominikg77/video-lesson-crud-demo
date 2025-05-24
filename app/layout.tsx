@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/sidebar/app-sidebar";
-import Header from "@/components/header/header";
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants/constants";
 import { AppInit } from "./app-init";
+import { AppSidebar } from "@/components/shared/sidebar/app-sidebar";
+import Header from "@/components/shared/header/header";
 
 export const metadata: Metadata = {
   title: {

@@ -10,7 +10,7 @@ import {
   DropdownMenuCheckboxItem,
 } from '@/components/ui/dropdown-menu';
 import { useTheme } from 'next-themes';
-import { Button } from '../ui/button';
+import { Button } from '../../ui/button';
 
 import { SunIcon, MoonIcon, SunMoon } from 'lucide-react';
 

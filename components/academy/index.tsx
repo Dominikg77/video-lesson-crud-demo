@@ -1,59 +1,74 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ButtonBarVideo from "./button-bar";
 import ContentVideo from "./content";
 import ProgressBar from "./progressbar";
 import VideoEmbed from "./video-embed";
 import VideoList from "./video-list";
-import { AcademySection } from "@/lib/data/academy-type";
+import { AcademyCategory, AcademySection, MockDataAcademy } from "@/lib/data/academy-type";
+import { AcademyLocalStorageService } from "@/lib/data/localStorage";
 
-const VideoPlayerPage = ({ data }: { data: AcademySection[] }) => {
-  const sections = useMemo(() => data.slice().sort((a, b) => a.orderId - b.orderId), [data]);
+interface VideoPlayerPageProps {
+  category: AcademyCategory;
+}
 
+const VideoPlayerPage = ({ category }: VideoPlayerPageProps) => {
+  const [sections, setSections] = useState<AcademySection[]>([]);
+  const [videoStates, setVideoStates] = useState<MockDataAcademy[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [activeTab, setActiveTab] = useState<"description" | "note">("description");
+
+  // Lade und filtere die Daten nach Kategorie
+  useEffect(() => {
+    const allSections = AcademyLocalStorageService.getSections();
+    const filtered = allSections.filter((section) => section.category === category);
+    setSections(filtered);
+  }, [category]);
+
+  // Flache Liste aller Videos (sortiert)
   const allVideos = useMemo(
     () =>
-      data
+      sections
         .slice()
         .sort((a, b) => a.orderId - b.orderId)
         .flatMap((section) => section.videos.slice().sort((a, b) => a.orderId - b.orderId)),
-    [data]
+    [sections]
   );
 
-  const [videoStates, setVideoStates] = useState(allVideos);
-  const firstIncompleteIndex = videoStates.findIndex((v) => !v.isCompleted);
-  const initialIndex = firstIncompleteIndex !== -1 ? firstIncompleteIndex : 0;
-  const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  // Synchronisiere videoStates mit allVideos
+  useEffect(() => {
+    setVideoStates(allVideos);
+    // Setze aktuellen Index auf erstes unvollständiges Video
+    const firstIncompleteIndex = allVideos.findIndex((v) => !v.isCompleted);
+    setCurrentIndex(firstIncompleteIndex !== -1 ? firstIncompleteIndex : 0);
+  }, [allVideos]);
 
-  // Tab-State
-  const [activeTab, setActiveTab] = useState<"description" | "note">("description");
-
-  if (!data || data.length === 0 || videoStates.length === 0) {
+  if (sections.length === 0 || videoStates.length === 0) {
     return <div className="max-w-7xl mx-auto p-4">No data available</div>;
   }
 
   const completedCount = videoStates.filter((v) => v.isCompleted).length;
   const progress = Math.round((completedCount / videoStates.length) * 100);
-
   const currentVideo = videoStates[currentIndex];
+  const isLastVideo = currentIndex === videoStates.length - 1;
 
   const handlePrev = () => setCurrentIndex((i) => Math.max(0, i - 1));
   const handleNext = () => setCurrentIndex((i) => Math.min(videoStates.length - 1, i + 1));
   const handleCheck = (checked: boolean) => {
-    setVideoStates((states) => states.map((v, idx) => (idx === currentIndex ? { ...v, isCompleted: checked } : v)));
+    setVideoStates((states) =>
+      states.map((v, idx) => (idx === currentIndex ? { ...v, isCompleted: checked } : v))
+    );
+    // Optional: persistieren im LocalStorage
+    AcademyLocalStorageService.setVideoCompleted(currentVideo.id, checked);
   };
 
-  // Tab Change
-  const handleTabChange = (value: "description" | "note") => {
-    setActiveTab(value);
-  };
+  const handleTabChange = (value: "description" | "note") => setActiveTab(value);
 
-  // Finish Handler
   const handleFinish = () => {
     window.alert("Kurs abgeschlossen!");
   };
 
-  const isLastVideo = currentIndex === videoStates.length - 1;
 
   return (
     <div className="max-w-7xl mx-auto p-4 space-y-4">
@@ -67,6 +82,7 @@ const VideoPlayerPage = ({ data }: { data: AcademySection[] }) => {
           <VideoEmbed src={currentVideo.videoUrl} title={currentVideo.title} />
           <ButtonBarVideo
             isCompleted={currentVideo.isCompleted}
+            videoId={currentVideo.id}
             onPrev={handlePrev}
             onNext={handleNext}
             onFinish={handleFinish}

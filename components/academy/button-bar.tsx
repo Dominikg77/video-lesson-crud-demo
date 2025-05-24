@@ -4,9 +4,11 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AcademyLocalStorageService } from "@/lib/data/localStorage";
 
 interface ButtonBarVideoProps {
   isCompleted: boolean;
+  videoId: string;
   onPrev: () => void;
   onNext: () => void;
   onFinish: () => void;
@@ -20,6 +22,7 @@ interface ButtonBarVideoProps {
 
 const ButtonBarVideo = ({
   isCompleted,
+  videoId,
   onPrev,
   onNext,
   onFinish,
@@ -31,6 +34,7 @@ const ButtonBarVideo = ({
   onTabChange,
 }: ButtonBarVideoProps) => {
   const handleCheckboxChange = (checked: boolean) => {
+    AcademyLocalStorageService.setVideoCompleted(videoId, checked);
     onCheck?.(checked);
   };
 
@@ -55,11 +59,7 @@ const ButtonBarVideo = ({
           </TabsList>
         </Tabs>
         <div className="flex items-center gap-3">
-          <Checkbox
-            id="isCompleted"
-            checked={isCompleted}
-            onCheckedChange={handleCheckboxChange}
-          />
+          <Checkbox id="isCompleted" checked={isCompleted} onCheckedChange={handleCheckboxChange} type="button" />
           <label htmlFor="isCompleted" className="cursor-pointer select-none">
             Abgeschlossen
           </label>
@@ -82,11 +82,7 @@ const ButtonBarVideo = ({
             Zurück
           </Button>
           <div className="flex items-center gap-3">
-            <Checkbox
-              id="isCompletedMobile"
-              checked={isCompleted}
-              onCheckedChange={handleCheckboxChange}
-            />
+            <Checkbox id="isCompletedMobile" checked={isCompleted} onCheckedChange={handleCheckboxChange} />
             <label htmlFor="isCompletedMobile" className="cursor-pointer select-none">
               Abgeschlossen
             </label>

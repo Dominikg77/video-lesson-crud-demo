@@ -36,6 +36,7 @@ const VideoEmbed: React.FC<VideoEmbedProps> = ({ src = "", title = "Video" }) =>
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           className="w-full h-full border-none rounded-lg"
           allowFullScreen
+          loading="lazy"
         />
       </Wrapper>
     );

@@ -1,3 +1,4 @@
+"use client";
 import { Card, CardContent } from "@/components/ui/card";
 
 const ContentVideo = ({ description, note, activeTab }: { description: string; note: string; activeTab: "description" | "note" }) => (

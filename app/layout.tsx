@@ -5,6 +5,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import Header from "@/components/header/header";
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants/constants";
+import { AppInit } from "./app-init";
 
 export const metadata: Metadata = {
   title: {
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="font-araboto antialiased">
+        <AppInit />
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <SidebarProvider>
             <div className="flex min-h-screen w-full">

@@ -1,4 +1,4 @@
-import { GraduationCap, UserLock, Command, Code } from "lucide-react"
+import { GraduationCap, Command, Code, UserCog, UserPen } from "lucide-react"
 import { Role } from "./sideNav.type"
 
 
@@ -8,9 +8,14 @@ export const roles: Role[] = [
         logo: GraduationCap,
         plan: "Masterclass",
     },
+     {
+        name: "Support",
+        logo: UserCog,
+        plan: "Support",
+    },
     {
         name: "Coach",
-        logo: UserLock,
+        logo: UserPen,
         plan: "coach",
     },
     {

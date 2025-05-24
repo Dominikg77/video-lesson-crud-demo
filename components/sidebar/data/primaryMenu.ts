@@ -8,6 +8,7 @@ import {
   Star,
 } from "lucide-react"
 import { PrimaryMenuSection } from "./sideNav.type"
+import { IntraDayRoutes } from "@/lib/route-constant"
 
 export const primaryMenu: PrimaryMenuSection[] = [
   {
@@ -16,7 +17,7 @@ export const primaryMenu: PrimaryMenuSection[] = [
     icon: Activity,
     isActive: true,
     items: [
-      { title: "Academy", url: "academy/intraday" },
+      { title: "Academy", url: IntraDayRoutes.academy },
       { title: "Lessons", url: "#" },
       { title: "Voice Over", url: "#" },
       { title: "Performance Guide", url: "#" },

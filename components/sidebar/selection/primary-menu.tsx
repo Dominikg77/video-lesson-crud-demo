@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, Home } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
@@ -14,26 +14,12 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { PrimaryMenuSection } from "../data/sideNav.type";
+import Link from "next/link";
 
-export function PrimaryMenu({
-  items,
-}: {
-  items: PrimaryMenuSection[];
-}) {
+export function PrimaryMenu({ items }: { items: PrimaryMenuSection[] }) {
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Deine Bereiche</SidebarGroupLabel>
-
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <SidebarMenuButton asChild tooltip="Dashboard" className="cursor-pointer">
-            <a href="/dashboard" className="flex items-center gap-2">
-              <Home className="w-5 h-5" />
-              <span>Dashboard</span>
-            </a>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      </SidebarMenu>
 
       <SidebarMenu>
         {items.map((item) => (
@@ -51,9 +37,9 @@ export function PrimaryMenu({
                   {item.items?.map((subItem) => (
                     <SidebarMenuSubItem key={subItem.title}>
                       <SidebarMenuSubButton asChild>
-                        <a href={subItem.url}>
+                        <Link href={subItem.url} passHref legacyBehavior>
                           <span>{subItem.title}</span>
-                        </a>
+                        </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}

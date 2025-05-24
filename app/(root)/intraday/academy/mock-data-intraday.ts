@@ -1,3 +1,9 @@
+
+export enum AcademyCategory {
+    Intraday = "intraday",
+    Scalping = "scalping"
+}
+
 export interface MockDataAcademy {
     id: string;
     orderId: number;
@@ -12,7 +18,7 @@ export interface AcademySection {
     id: string;
     title: string;
     orderId: number;
-    category: 'intraday' | 'scalping';
+    category: AcademyCategory;
     videos: MockDataAcademy[];
 }
 
@@ -21,7 +27,7 @@ export const mockSections: AcademySection[] = [
         id: "basic-wissen",
         title: "Basic Wissen",
         orderId: 1,
-        category: "intraday",
+        category: AcademyCategory.Intraday,
         videos: [
             {
                 id: "1sfd",
@@ -56,7 +62,7 @@ export const mockSections: AcademySection[] = [
         id: "live-trading",
         title: "Live Trading",
         orderId: 2,
-        category: "intraday",
+        category: AcademyCategory.Intraday,
         videos: [
             {
                 id: "asdasdasd",

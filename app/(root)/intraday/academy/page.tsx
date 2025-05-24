@@ -1,12 +1,12 @@
 import MainAcademy from "@/components/academy";
-import { mockSections } from "./mock-data-intraday";
+import { AcademyCategory, mockSections } from "./mock-data-intraday";
 
 export const metadata = {
   title: "Intraday Academy",
 };
 
 const IntraDayAcademy = () => {
-  const intraDaySection = mockSections.filter((section) => section.category === "intraday");
+  const intraDaySection = mockSections.filter((section) => section.category === AcademyCategory.Intraday);
 
   return (
     <>

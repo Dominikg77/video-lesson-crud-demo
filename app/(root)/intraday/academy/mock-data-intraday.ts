@@ -30,7 +30,7 @@ export const mockSections: AcademySection[] = [
                 description: "<h3>Was ist der Demand Index</h3><p>Der Demand Index ist ein technischer Indikator, der das Verhältnis von Angebot und Nachfrage auf dem Markt misst. Er wird verwendet, um potenzielle Umkehrpunkte im Preisverlauf zu identifizieren und die Stärke eines Trends zu bewerten.</p>",
                 note: "Muss ich Researchen, damit ich es in meinem Setup verwenden kann",
                 videoUrl: "https://www.youtube.com/embed/q0Yo8lvsr4E",
-                isCompleted: false,
+                isCompleted: true,
             },
             {
                 id: "as3ea",
@@ -61,7 +61,7 @@ export const mockSections: AcademySection[] = [
             {
                 id: "asdasdasd",
                 orderId: 1,
-                title: "Trading Session 30 Lots im NQ $20.000 Profi",
+                title: "Trading Session 30 Lots im NQ $20.000 Profit",
                 description: "enn Du den profitablen Handel mit Futures umf",
                 note: "asdasdsad",
                 videoUrl: "https://www.youtube.com/embed/fKRo4_8SwRo",

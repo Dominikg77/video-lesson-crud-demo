@@ -1,10 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card";
 
-const ContentVideo = () => {
+const ContentVideo = ({ description, note }: { description: string; note: string }) => {
   return (
     <Card>
       <CardContent className="p-4">
-        Hier könnte deine Beschreibung, Notizen oder Fragen zum Video erscheinen.
+        <div>
+          des: <span dangerouslySetInnerHTML={{ __html: description }} />
+          <br />
+          note: {note}
+        </div>
       </CardContent>
     </Card>
   );

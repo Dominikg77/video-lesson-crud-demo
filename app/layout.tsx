@@ -16,6 +16,8 @@ import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants/constants";
 import { AppInit } from "./app-init";
 import { AppSidebar } from "@/components/shared/sidebar/app-sidebar";
 import Header from "@/components/shared/header/header";
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 
 // Globale Metadaten für die Seite (z.B. für SEO)
 export const metadata: Metadata = {
@@ -55,6 +57,7 @@ export default function RootLayout({
             </div>
           </SidebarProvider>
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );

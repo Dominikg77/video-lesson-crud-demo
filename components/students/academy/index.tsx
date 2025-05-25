@@ -49,7 +49,6 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
     setCurrentIndex(firstIncompleteIndex !== -1 ? firstIncompleteIndex : 0);
     setHasInitialized(true);
 
-    console.log("Initial video states:", initialVideos);
   }, [sections, hasInitialized]);
 
   const mergedSections = useMemo(() => mergeSectionsWithVideoStates(sections, videoStates), [sections, videoStates]);
@@ -67,7 +66,6 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
   const handleNext = () => setCurrentIndex((i) => Math.min(videoStates.length - 1, i + 1));
 
   const handleCheck = (checked: boolean) => {
-    console.log("Video completed:", checked, "for video ID:", currentVideo.id);
 
     setVideoStates((states) => {
       const newStates = [...states];

@@ -5,7 +5,6 @@
  * Zeigt einen freundlichen Hinweis für den Benutzer,
  * wenn eine nicht existierende Route aufgerufen wird.
  */
-
 import { AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -41,4 +40,4 @@ const NotFoundPage = () => {
   );
 };
 
-export default NotFoundPage;
+export default NotFoundPage; 

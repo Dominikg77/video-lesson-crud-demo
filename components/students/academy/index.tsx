@@ -112,7 +112,7 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
             tabValue={activeTab}
             onTabChange={handleTabChange}
           />
-          {/* <ContentVideo description={currentVideo.description} note={currentVideo.note} activeTab={activeTab} /> */}
+          <ContentVideo description={currentVideo.description} note={currentVideo.note} activeTab={activeTab} />
         </div>
         <div className="lg:col-span-4 mt-6 lg:mt-0 hidden lg:flex flex-col space-y-4">
           <ProgressBar progress={progress} />

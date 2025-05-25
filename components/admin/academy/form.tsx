@@ -3,9 +3,22 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { AcademyCategory } from "@/lib/data/academy-type";
@@ -21,7 +34,7 @@ const formSchema = z.object({
   isLive: z.boolean(),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+export type FormValues = z.infer<typeof formSchema>;
 
 type AddEditFormProps = {
   initialValues?: Partial<FormValues> | null;
@@ -29,7 +42,11 @@ type AddEditFormProps = {
   disabled?: boolean;
 };
 
-export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEditFormProps) {
+export default function AddEditForm({
+  initialValues,
+  onSubmit,
+  disabled
+}: AddEditFormProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,7 +56,7 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
       description: "",
       videoUrl: "",
       isLive: false,
-      orderId: 0,
+      orderId: 1,
       ...initialValues,
     },
   });
@@ -55,7 +72,7 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
         description: "",
         videoUrl: "",
         isLive: false,
-        orderId: 0,
+        orderId: 1,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,22 +80,33 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
 
   return (
     <Form {...form}>
-      <form id="add-edit-form" onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-6 w-full">
-        <div>
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Titel</FormLabel>
-                <FormControl>
-                  <Input placeholder="Titel" type="text" {...field} disabled={disabled} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+      <form
+        id="add-edit-form"
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="grid grid-cols-1 gap-6 w-full"
+      >
+        {/* Titel */}
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Titel</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Titel"
+                  type="text"
+                  autoFocus
+                  {...field}
+                  disabled={disabled}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Kategorie und Kapitel */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -86,7 +114,11 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Kategorie</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={disabled}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  disabled={disabled}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Auswahl einer Kategorie" />
@@ -107,7 +139,11 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Kapitel</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={disabled}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  disabled={disabled}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Auswahl eines Kapitels" />
@@ -124,39 +160,48 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
             )}
           />
         </div>
-        <div>
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Beschreibung</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="Gib eine Beschreibung des Videos oder verlinke etwas"
-                    className="resize-none min-h-[120px] md:min-h-[160px]"
-                    {...field}
-                    disabled={disabled}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+
+        {/* Beschreibung */}
         <FormField
           control={form.control}
-          name="videoUrl"
+          name="description"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Video Url</FormLabel>
+              <FormLabel>Beschreibung</FormLabel>
               <FormControl>
-                <Input placeholder="embed Youtube" type="text" {...field} disabled={disabled} />
+                <Textarea
+                  placeholder="Gib eine Beschreibung des Videos oder verlinke etwas"
+                  className="resize-none min-h-[120px] md:min-h-[160px]"
+                  {...field}
+                  disabled={disabled}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
+        {/* Video URL */}
+        <FormField
+          control={form.control}
+          name="videoUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Video-URL</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Embed Youtube"
+                  type="text"
+                  {...field}
+                  disabled={disabled}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Reihenfolge und Live */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
           <FormField
             control={form.control}
@@ -170,7 +215,9 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
                     type="number"
                     {...field}
                     value={field.value ?? ""}
-                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    onChange={(e) =>
+                      field.onChange(e.target.value === "" ? "" : e.target.valueAsNumber)
+                    }
                     disabled={disabled}
                   />
                 </FormControl>
@@ -185,7 +232,11 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
               <FormItem className="flex flex-row items-center gap-4 h-full">
                 <FormLabel>Live</FormLabel>
                 <FormControl>
-                  <Switch checked={field.value} onCheckedChange={field.onChange} disabled={disabled} />
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                    disabled={disabled}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

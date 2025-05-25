@@ -67,16 +67,19 @@ export const AcademyLocalStorageService = {
     },
 
     // Holt ein Video anhand der Video-Id aus dem Local Storage
-    getVideoById: (videoId: string) => {
-        const sections = AcademyLocalStorageService.getSections();
-        for (const section of sections) {
-            const video = section.videos.find((v) => v.id === videoId);
-            if (video) {
-                return video;
-            }
+  getVideoById: (videoId: string) => {
+    const sections = AcademyLocalStorageService.getSections();
+    for (const section of sections) {
+        const video = section.videos.find((v) => v.id === videoId);
+        if (video) {
+            return {
+                video,
+                category: section.category, // oder section.category, je nach Datenmodell
+            };
         }
-        return null;
-    },
+    }
+    return null;
+},
 
 
 

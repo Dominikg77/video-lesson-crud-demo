@@ -1,10 +1,17 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { AcademyLocalStorageService } from "@/lib/data/localStorage";
-import type { MockDataAcademy, MockDataAcademyAddEdit } from "@/lib/data/academy-type";
+import type { AcademyCategory, MockDataAcademy, MockDataAcademyAddEdit } from "@/lib/data/academy-type";
 import AddEditForm from "./form";
 
 type EditAddDialogProps = {
@@ -13,23 +20,27 @@ type EditAddDialogProps = {
   videoId?: string;
 };
 
+type InitialVideoData = {
+  video: MockDataAcademy;
+  category: AcademyCategory;
+} | null;
+
 export const EditAddDialog: React.FC<EditAddDialogProps> = ({ open, onOpenChange, videoId }) => {
-  const [video, setVideo] = useState<MockDataAcademy | null>(null);
+  const [videoData, setVideoData] = useState<InitialVideoData>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isEdit = Boolean(videoId);
 
   useEffect(() => {
     if (isEdit && videoId) {
-      const videoData = AcademyLocalStorageService.getVideoById(videoId);
-      setVideo(videoData ?? null);
+      const loaded = AcademyLocalStorageService.getVideoById(videoId);
+      setVideoData(loaded ?? null);
     } else {
-      setVideo(null);
+      setVideoData(null);
     }
   }, [isEdit, videoId, open]);
 
   const handleSubmit = async (data: MockDataAcademyAddEdit) => {
     setIsSubmitting(true);
-
     if (isEdit && videoId) {
       AcademyLocalStorageService.editVideo(videoId, data);
     } else {
@@ -51,10 +62,19 @@ export const EditAddDialog: React.FC<EditAddDialogProps> = ({ open, onOpenChange
         <DialogHeader>
           <DialogTitle>{isEdit ? "Video bearbeiten" : "Video erstellen"}</DialogTitle>
           <DialogDescription>
-            {isEdit ? `Du bearbeitest das Video mit dem Titel: ${video?.title}` : "Erstelle ein neues Video."}
+            {isEdit
+              ? `Du bearbeitest das Video mit dem Titel: ${videoData?.video.title}`
+              : "Erstelle ein neues Video."}
           </DialogDescription>
         </DialogHeader>
-        <AddEditForm initialValues={video} onSubmit={handleSubmit} disabled={isSubmitting} />
+        <AddEditForm
+          initialValues={{
+            ...videoData?.video,
+            categoryId: videoData?.category // <-- Kategorie mitgeben!
+          }}
+          onSubmit={handleSubmit}
+          disabled={isSubmitting}
+        />
         <DialogFooter>
           <Button onClick={() => onOpenChange(false)} variant="secondary" disabled={isSubmitting}>
             Abbrechen

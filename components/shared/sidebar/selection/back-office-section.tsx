@@ -15,7 +15,7 @@ export function BackOfficeSection({ title, backOfficeSection }: { title: string;
         {backOfficeSection.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild tooltip={item.name}>
-              <span className={pathname === item.url ? "text-blue-600 font-bold" : item.isDisabled ? "text-gray-400" : ""}>
+              <span className={pathname === item.url ? "text-blue-600 font-bold" : item.isDisabled ? "text-gray-700" : ""}>
                 <Link href={item.url} className="flex items-center gap-2">
                   <item.icon />
                   <span>{item.name}</span>

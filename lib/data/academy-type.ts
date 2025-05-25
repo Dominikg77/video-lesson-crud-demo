@@ -12,11 +12,12 @@ export interface MockDataAcademy {
     description: string;
     videoUrl: string;
     isLive: boolean;
-    // Props from User, userData verweiss auf Id from AcademyData ans safe the Date in one place
+    // Props from User, userData, sollten nicht mit den Academy Daten gespeichert werden
     note: string;
     isCompleted: boolean;
 }
 
+// wäre eine eigene Tabelle  (Sectionen erstellen und darin wieder ein verweiss auf die Videos)
 export interface AcademySection {
     id: string;
     title: string;

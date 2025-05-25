@@ -1,5 +1,7 @@
 import { AcademyCategory, AcademySection } from "./academy-type";
 
+// Mock Daten für die Academy für den Initialen Start der App
+
 export const mockSections: AcademySection[] = [
     {
         id: "basic-wissen",

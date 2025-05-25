@@ -6,6 +6,13 @@ export interface DashboardCardData {
     link: string;
 }
 
+/**
+ * dashboardMainCards
+ * ------------------
+ * Enthält die Hauptkarten für das Dashboard.
+ * Jede Karte repräsentiert eine Route und enthält Titel, Beschreibung und Link.
+ */
+
 export const dashboardMainCards: DashboardCardData[] = [
     {
         title: "Intraday",
@@ -20,6 +27,6 @@ export const dashboardMainCards: DashboardCardData[] = [
     {
         title: "Masterclass",
         description: "Vertiefe dein Wissen mit unserer Masterclass und werde zum Experten.",
-        link: "/"
+        link: "/masterclass"
     }
 ];

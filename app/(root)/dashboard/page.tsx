@@ -1,3 +1,9 @@
+/** * Dashboard Page
+ * * Zeigt die Hauptkarten für verschiedene Bereiche des Dashboards an.
+ * * Diese Seite ist die zentrale Anlaufstelle für den Benutzer,
+ * * um auf verschiedene Trading-Bereiche zuzugreifen.
+ * */
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardCard from "./dashboard-card";
 import { dashboardMainCards } from "./dashboard-main-card-data";

@@ -1,5 +1,10 @@
 "use client";
 
+/**
+ * Haupt-Sidebar-Komponente für die gesamte App.
+ * Zeigt Rollenwahl, Navigation, zusätzliche Bereiche, Back Office und Nutzerinfos.
+ */
+
 import * as React from "react";
 import {
   Sidebar,
@@ -24,7 +29,7 @@ import Link from "next/link";
 import { PrimaryMenu } from "./selection/primary-menu";
 import { primaryMenu } from "./data/primaryMenu";
 
-// This is sample data.
+// Beispiel-Nutzerdaten (später aus Auth/Backend holen)
 const data = {
   user: {
     name: "Dominik Graf",
@@ -33,21 +38,26 @@ const data = {
   },
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
   return (
+    // Die Sidebar ist zusammenklappbar und nimmt alle weiteren Props entgegen
     <Sidebar collapsible="icon" {...props}>
+      {/* Kopfbereich: Rollenwahl */}
       <SidebarHeader>
         <RoleSwitcher roles={roles} />
       </SidebarHeader>
+      {/* Hauptinhalt: Navigationsgruppen und weitere Abschnitte */}
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild tooltip="Dashboard">
+                {/* Dashboard-Link mit Icon */}
+                {/* TODO: Hier könnte das Logo stehen */}
+
                 <span>
                   <Link href="/dashboard" passHref legacyBehavior>
                     <span className="flex items-center gap-2">
-                      {/* TODO: LOGO */}
                       <Home className="w-5 h-5" />
                       <span>Dashboard</span>
                     </span>
@@ -57,14 +67,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
-
+        {/* Primäre Bereiche (z. B. Teams, Projekte), dynamisch aus Daten */}
         <PrimaryMenu title="Deine Bereiche" items={primaryMenu} />
+        {/* Extra-Bereiche & Tools */}
         <AdditionalSection title="Extras & Tools" additionalSections={additionalSections} />
+        {/* Back Office Bereich */}
         <BackOfficeSection title="Back Office" backOfficeSection={backOffice} />
       </SidebarContent>
+      {/* Footer: Nutzer-Avatar und Menü */}
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
+      {/* Rail für mobile/touch Steuerung */}
       <SidebarRail />
     </Sidebar>
   );

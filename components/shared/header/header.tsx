@@ -1,18 +1,78 @@
+"use client";
+
+/**
+ * Header-Komponente mit Sidebar-Trigger, Plattform-Titel, Breadcrumb (nur ab 576px sichtbar) und Toggle für Dark/Light-Mode.
+ */
+
 import { SidebarTrigger } from "../../ui/sidebar";
 import ModeToggle from "./mode-toggle";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import Image from "next/image";
+
+/**
+ * Wandelt URL-Segmente in sprechende Namen um.
+ */
+function prettify(segment: string) {
+  if (!segment) return "";
+  switch (segment) {
+    case "dashboard":
+      return "Dashboard";
+    case "users":
+      return "Benutzer";
+    default:
+      return segment.charAt(0).toUpperCase() + segment.slice(1);
+  }
+}
 
 const Header = () => {
+  const pathname = usePathname();
+
+  // Zerlege den Pfad in Segmente, filtere leere Elemente
+  const pathSegments = pathname.split("/").filter(Boolean);
+
+  // Breadcrumbs erstellen: für jedes Segment einen Link (ausser letzter, der ist nur Text)
+  let href = "";
+  const breadcrumbs = pathSegments.map((segment, idx) => {
+    href += "/" + segment;
+    const isLast = idx === pathSegments.length - 1;
+    return (
+      <span key={href} className="flex items-center">
+        {!isLast ? (
+          <>
+            <Link href={href} className="text-blue-600 hover:underline">
+              {prettify(segment)}
+            </Link>
+            <span className="mx-2 text-gray-400">/</span>
+          </>
+        ) : (
+          <span className="text-gray-700">{prettify(segment)}</span>
+        )}
+      </span>
+    );
+  });
+
   return (
     <div className="flex items-center justify-between px-4 py-2 border-b">
-      {/* Left Side */}
+      {/* Linke Seite: Sidebar-Trigger, Titel und Breadcrumb */}
       <div className="flex items-center gap-2">
-        <SidebarTrigger />
-        <span className="text-lg font-semibold">Education Plattform</span>
-        {/* <span className="text-lg font-semibold"> > Breadcrumb...</span> */}
-
+        <div className="flex items-center gap-2">
+          <SidebarTrigger />
+          {/* Logo anzeigen */}
+          <Image
+            src="/images/logo.png"
+            alt="Logo"
+            width={0}
+            height={0}
+            className="h-6 w-auto object-contain"
+            sizes="(max-width: 768px) 100vw, 200px"
+          />
+        </div>
+        {/* Breadcrumb: nur auf grösseren Bildschirmen (>=576px, also ab sm) anzeigen */}
+        {breadcrumbs.length > 0 && <span className="ml-2 hidden sm:flex items-center text-sm text-gray-500">{breadcrumbs}</span>}
       </div>
 
-      {/* Right Side */}
+      {/* Rechte Seite: Version & Toggle */}
       <div className="flex items-center gap-4">
         <span className="text-sm font-semibold bg-blue-500 text-white px-2 py-1 rounded">DEV v0.0.1</span>
         <ModeToggle />
@@ -22,38 +82,3 @@ const Header = () => {
 };
 
 export default Header;
-
-// TODO: Breadcrumb open
-
-// <SidebarProvider>
-//   <AppSidebar />
-//   <SidebarInset>
-//     <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-//       <div className="flex items-center gap-2 px-4">
-//         <SidebarTrigger className="-ml-1" />
-//         <Separator orientation="vertical" className="mr-2 h-4" />
-//         <Breadcrumb>
-//           <BreadcrumbList>
-//             <BreadcrumbItem className="hidden md:block">
-//               <BreadcrumbLink href="#">
-//                 Building Your Application
-//               </BreadcrumbLink>
-//             </BreadcrumbItem>
-//             <BreadcrumbSeparator className="hidden md:block" />
-//             <BreadcrumbItem>
-//               <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-//             </BreadcrumbItem>
-//           </BreadcrumbList>
-//         </Breadcrumb>
-//       </div>
-//     </header>
-//     <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-//       <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-//         <div className="aspect-video rounded-xl bg-muted/50" />
-//         <div className="aspect-video rounded-xl bg-muted/50" />
-//         <div className="aspect-video rounded-xl bg-muted/50" />
-//       </div>
-//       <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
-//     </div>
-//   </SidebarInset>
-// </SidebarProvider>

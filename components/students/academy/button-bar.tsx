@@ -1,6 +1,12 @@
 "use client";
 
-import * as React from "react";
+/**
+ * Steuerungsleiste für den Videoplayer: Button für Prev/Next, Checkbox für Abgeschlossen-Status,
+ * Tabs für Beschreibung/Notiz.
+ * Responsives Layout für Desktop und Mobile.
+ */
+
+import React, { useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -20,7 +26,7 @@ interface ButtonBarVideoProps {
   onTabChange: (value: "description" | "note") => void;
 }
 
-const ButtonBarVideo = ({
+const ButtonBarVideo: React.FC<ButtonBarVideoProps> = ({
   isCompleted,
   videoId,
   onPrev,
@@ -32,22 +38,33 @@ const ButtonBarVideo = ({
   onCheck,
   tabValue,
   onTabChange,
-}: ButtonBarVideoProps) => {
-  const handleCheckboxChange = (checked: boolean) => {
-    AcademyLocalStorageService.setVideoCompleted(videoId, checked);
-    onCheck?.(checked);
-  };
+}) => {
+  /**
+   * Setzt den Completed-Status im Storage und ruft Parent-Callback.
+   */
+  const handleCheckboxChange = useCallback(
+    (checked: boolean) => {
+      AcademyLocalStorageService.setVideoCompleted(videoId, checked);
+      onCheck?.(checked);
+    },
+    [videoId, onCheck]
+  );
 
-  // Tab-Wechsel
-  const handleTabsValueChange = (value: string) => {
-    if (value === "description" || value === "note") {
-      onTabChange(value);
-    }
-  };
+  /**
+   * Tab-Wechsel (Beschreibung/Notiz)
+   */
+  const handleTabsValueChange = useCallback(
+    (value: string) => {
+      if (value === "description" || value === "note") {
+        onTabChange(value);
+      }
+    },
+    [onTabChange]
+  );
 
-  // Desktop-Layout
   return (
     <>
+      {/* Desktop-Version */}
       <div className="hidden sm:flex flex-row items-center justify-between gap-4 w-full">
         <Button variant="outline" onClick={onPrev} disabled={disablePrev}>
           Zurück
@@ -75,7 +92,7 @@ const ButtonBarVideo = ({
         </div>
       </div>
 
-      {/* Mobile-Layout */}
+      {/* Mobile-Version */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between sm:hidden gap-4">
         <div className="flex justify-between w-full sm:w-auto sm:flex-col sm:justify-start sm:gap-4 items-center gap-2">
           <Button variant="outline" onClick={onPrev} disabled={disablePrev}>
@@ -92,7 +109,7 @@ const ButtonBarVideo = ({
               Weiter
             </Button>
           ) : (
-            <Button onClick={onFinish} disabled={!isCompleted} variant="success">
+            <Button onClick={onFinish} disabled={!isCompleted}>
               Finish
             </Button>
           )}

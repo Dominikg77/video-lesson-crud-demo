@@ -1,3 +1,13 @@
+/**
+ * RootLayout-Komponente
+ * ---------------------
+ * Dies ist das zentrale Layout für die gesamte Next.js-App.
+ * - Definiert globale Metadaten (Titel, Beschreibung)
+ * - Bindet globale Stile und Themes ein
+ * - Stellt App-weite Provider bereit (Theme, Sidebar)
+ * - Strukturiert das Layout in Sidebar, Header und Hauptinhalt
+ */
+
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
@@ -7,6 +17,7 @@ import { AppInit } from "./app-init";
 import { AppSidebar } from "@/components/shared/sidebar/app-sidebar";
 import Header from "@/components/shared/header/header";
 
+// Globale Metadaten für die Seite (z.B. für SEO)
 export const metadata: Metadata = {
   title: {
     template: `%s | Education`,
@@ -21,19 +32,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // html-Root-Element, setzt Sprache und unterdrückt Hydrationswarnungen (wichtig für ThemeProvider)
     <html lang="en" suppressHydrationWarning>
       <body className="font-araboto antialiased">
+        {/* Initialisierungscode für App, z.B. Auth, Analytics */}
         <AppInit />
+        {/* ThemeProvider für Light/Dark/Auto Theme */}
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+          {/* Globaler SidebarProvider (z.B. für mobile Sidebar-Handling) */}
           <SidebarProvider>
+            {/* Flex-Container: Sidebar + Hauptinhalt */}
             <div className="flex min-h-screen w-full">
-              {/* Sidebar left */}
+              {/* Linke Sidebar */}
               <AppSidebar />
-              {/* Main content rechts neben der Sidebar */}
+              {/* Hauptbereich: Header + Seiteninhalt */}
               <main className="flex flex-col flex-1">
-                {/* Optional: Topbar with breadcrum etc */}
+                {/* Obere Navigationsleiste, z.B. mit Breadcrumbs oder User-Menü */}
                 <Header />
-                {/* Page Content */}
+                {/* Seiteninhalt: Hier werden die Seiten gerendert */}
                 <div className="p-6">{children}</div>
               </main>
             </div>

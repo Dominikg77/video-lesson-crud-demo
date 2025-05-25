@@ -1,3 +1,6 @@
+
+// User Rollen
+
 export const RolesConst = {
     Students: "Schüler",
     Support: "Support",
@@ -8,6 +11,7 @@ export const RolesConst = {
 
 export type RoleName = typeof RolesConst[keyof typeof RolesConst];
 
+// Schüler zugewissene Produkte
 export const PackageConst = {
     IntraDay: "Intraday",
     Scalping: "Scalping",

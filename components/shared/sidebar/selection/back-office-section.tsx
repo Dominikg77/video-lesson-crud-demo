@@ -1,13 +1,18 @@
 "use client";
 
+/**
+ * Komponente für Back-Office-Bereiche in der Sidebar.
+ * Zeigt alle übergebenen Backoffice-Sektionen an.
+ */
+
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { SectionItem } from "../data/sidebar.type";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export function BackOfficeSection({ title, backOfficeSection }: { title: string; backOfficeSection: SectionItem[] }) {
-   const pathname = usePathname();
-   
+  const pathname = usePathname();
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{title}</SidebarGroupLabel>

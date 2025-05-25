@@ -1,4 +1,10 @@
 "use client";
+
+/**
+ * Komponente für zusätzliche (nicht-primäre) Navigationsbereiche.
+ * Zeigt alle übergebenen Sektionen an.
+ */
+
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { SectionItem } from "../data/sidebar.type";
 import Link from "next/link";
@@ -6,6 +12,7 @@ import { usePathname } from "next/navigation";
 
 export function AdditionalSection({ title, additionalSections }: { title: string; additionalSections: SectionItem[] }) {
   const pathname = usePathname();
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{title}</SidebarGroupLabel>

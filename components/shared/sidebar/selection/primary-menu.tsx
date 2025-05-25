@@ -1,5 +1,10 @@
 "use client";
 
+/**
+ * Komponente für die primären Navigationsbereiche in der Sidebar.
+ * Unterstützt Collapsible-Gruppen für Untermenüs.
+ */
+
 import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { PrimaryMenuSection } from "../data/sidebar.type";
@@ -20,17 +25,14 @@ import Link from "next/link";
 export function PrimaryMenu({ title, items }: { title: string; items: PrimaryMenuSection[] }) {
   const pathname = usePathname();
 
-  // State für offenen Zustand der Collapsible-Gruppen
+  // State: Offen-Status für jede Collapsible-Gruppe
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
 
-  // Initialisieren und Updaten der offenen Gruppen basierend auf der aktuellen Route
+  // Initialisiere offene Gruppen basierend auf der aktuellen Route, damit die Sidebar beim Laden den richtigen Zustand hat
   useEffect(() => {
     const newOpenItems: Record<string, boolean> = {};
     items.forEach((item) => {
-      newOpenItems[item.title] =
-        item.items?.some(
-          (subItem) => pathname === subItem.url || pathname.startsWith(subItem.url)
-        ) ?? false;
+      newOpenItems[item.title] = item.items?.some((subItem) => pathname === subItem.url || pathname.startsWith(subItem.url)) ?? false;
     });
     setOpenItems(newOpenItems);
   }, [pathname, items]);
@@ -38,18 +40,14 @@ export function PrimaryMenu({ title, items }: { title: string; items: PrimaryMen
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{title}</SidebarGroupLabel>
-
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible
             key={item.title}
             asChild
             open={!!openItems[item.title]}
-            onOpenChange={(isOpen) =>
-              setOpenItems((prev) => ({ ...prev, [item.title]: isOpen }))
-            }
-            className="group/collapsible"
-          >
+            onOpenChange={(isOpen) => setOpenItems((prev) => ({ ...prev, [item.title]: isOpen }))}
+            className="group/collapsible">
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={item.title}>
@@ -65,14 +63,14 @@ export function PrimaryMenu({ title, items }: { title: string; items: PrimaryMen
                       <SidebarMenuSubButton asChild>
                         <Link href={subItem.url} passHref legacyBehavior>
                           <span
-                            className={
+                            className={[
+                              "flex items-center px-2 py-1 rounded transition-colors duration-150",
                               pathname === subItem.url
-                                ? "text-blue-600 font-bold"
+                                ? "text-blue-600 font-bold bg-sidebar-accent/50"
                                 : subItem.isDisabled
-                                ? "text-gray-700"
-                                : ""
-                            }
-                          >
+                                ? "text-gray-700 cursor-not-allowed"
+                                : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer",
+                            ].join(" ")}>
                             {subItem.title}
                           </span>
                         </Link>

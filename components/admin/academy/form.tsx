@@ -1,29 +1,22 @@
 "use client";
 
+/**
+ * AddEditForm: Formular zum Hinzufügen oder Bearbeiten eines Videos in der Akademie.
+ * Validiert die Eingaben und übergibt die Daten an den Parent (Edit Add Dialog).
+ */
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { AcademyCategory } from "@/lib/data/academy-type";
 import { useEffect } from "react";
 
+// Zod-Schema für Formularvalidierung
 const formSchema = z.object({
   title: z.string().min(1, "Titel ist erforderlich"),
   categoryId: z.string().min(1, "Kategorie auswählen"),
@@ -42,11 +35,7 @@ type AddEditFormProps = {
   disabled?: boolean;
 };
 
-export default function AddEditForm({
-  initialValues,
-  onSubmit,
-  disabled
-}: AddEditFormProps) {
+export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEditFormProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,6 +50,7 @@ export default function AddEditForm({
     },
   });
 
+  // Initialwerte setzen, wenn sich diese ändern
   useEffect(() => {
     if (initialValues) {
       form.reset({ ...form.getValues(), ...initialValues });
@@ -80,11 +70,7 @@ export default function AddEditForm({
 
   return (
     <Form {...form}>
-      <form
-        id="add-edit-form"
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="grid grid-cols-1 gap-6 w-full"
-      >
+      <form id="add-edit-form" onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-6 w-full">
         {/* Titel */}
         <FormField
           control={form.control}
@@ -93,13 +79,7 @@ export default function AddEditForm({
             <FormItem>
               <FormLabel>Titel</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Titel"
-                  type="text"
-                  autoFocus
-                  {...field}
-                  disabled={disabled}
-                />
+                <Input placeholder="Titel" type="text" autoFocus {...field} disabled={disabled} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -114,11 +94,7 @@ export default function AddEditForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Kategorie</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  disabled={disabled}
-                >
+                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={disabled}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Auswahl einer Kategorie" />
@@ -139,11 +115,7 @@ export default function AddEditForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Kapitel</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  disabled={disabled}
-                >
+                <Select onValueChange={field.onChange} defaultValue={field.value} disabled={disabled}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Auswahl eines Kapitels" />
@@ -189,12 +161,7 @@ export default function AddEditForm({
             <FormItem>
               <FormLabel>Video-URL</FormLabel>
               <FormControl>
-                <Input
-                  placeholder="Embed Youtube"
-                  type="text"
-                  {...field}
-                  disabled={disabled}
-                />
+                <Input placeholder="Embed Youtube" type="text" {...field} disabled={disabled} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -215,9 +182,7 @@ export default function AddEditForm({
                     type="number"
                     {...field}
                     value={field.value ?? ""}
-                    onChange={(e) =>
-                      field.onChange(e.target.value === "" ? "" : e.target.valueAsNumber)
-                    }
+                    onChange={(e) => field.onChange(e.target.value === "" ? "" : e.target.valueAsNumber)}
                     disabled={disabled}
                   />
                 </FormControl>
@@ -232,11 +197,7 @@ export default function AddEditForm({
               <FormItem className="flex flex-row items-center gap-4 h-full">
                 <FormLabel>Live</FormLabel>
                 <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    disabled={disabled}
-                  />
+                  <Switch checked={field.value} onCheckedChange={field.onChange} disabled={disabled} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

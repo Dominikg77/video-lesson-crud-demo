@@ -1,14 +1,13 @@
 "use client";
 
+/**
+ * Dialog zum Hinzufügen oder Bearbeiten eines Videos.
+ * Lädt bestehende Videodaten und zeigt das AddEditForm.
+ * Übergibt die Form-Daten an den LocalStorage-Service.
+ */
+
 import React, { useEffect, useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { AcademyLocalStorageService } from "@/lib/data/localStorage";
 import type { AcademyCategory, MockDataAcademy, MockDataAcademyAddEdit } from "@/lib/data/academy-type";
@@ -30,6 +29,7 @@ export const EditAddDialog: React.FC<EditAddDialogProps> = ({ open, onOpenChange
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isEdit = Boolean(videoId);
 
+  // Lade Videodaten beim Öffnen zum Bearbeiten
   useEffect(() => {
     if (isEdit && videoId) {
       const loaded = AcademyLocalStorageService.getVideoById(videoId);
@@ -39,6 +39,7 @@ export const EditAddDialog: React.FC<EditAddDialogProps> = ({ open, onOpenChange
     }
   }, [isEdit, videoId, open]);
 
+  // Verarbeitung des Formular-Submits (Hinzufügen oder Bearbeiten)
   const handleSubmit = async (data: MockDataAcademyAddEdit) => {
     setIsSubmitting(true);
     if (isEdit && videoId) {
@@ -62,15 +63,13 @@ export const EditAddDialog: React.FC<EditAddDialogProps> = ({ open, onOpenChange
         <DialogHeader>
           <DialogTitle>{isEdit ? "Video bearbeiten" : "Video erstellen"}</DialogTitle>
           <DialogDescription>
-            {isEdit
-              ? `Du bearbeitest das Video mit dem Titel: ${videoData?.video.title}`
-              : "Erstelle ein neues Video."}
+            {isEdit ? `Du bearbeitest das Video mit dem Titel: ${videoData?.video.title}` : "Erstelle ein neues Video."}
           </DialogDescription>
         </DialogHeader>
         <AddEditForm
           initialValues={{
             ...videoData?.video,
-            categoryId: videoData?.category // <-- Kategorie mitgeben!
+            categoryId: videoData?.category, // Kategorie vorbelegen
           }}
           onSubmit={handleSubmit}
           disabled={isSubmitting}

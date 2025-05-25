@@ -1,7 +1,14 @@
+"use client";
+
+/**
+ * Kapitel- und Videoübersicht mit Fortschritt (Checked) und Auswahlmöglichkeit.
+ * Zeigt alle Kapitel und deren Videos an, markiert die bereits abgeschlossenen.
+ */
+
+import React, { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MockDataAcademy } from "@/lib/data/academy-type";
 import { ChevronDown, CheckCircle, Circle } from "lucide-react";
-import * as React from "react";
 
 type AcademySection = {
   id: string;
@@ -13,29 +20,37 @@ type AcademySection = {
 interface VideoListProps {
   sections: AcademySection[];
   currentVideoIndex: number;
-  videoList: MockDataAcademy[]; // flat list, ordered
+  videoList: MockDataAcademy[]; // Flat-Liste, sortiert
   onSelect: (index: number) => void;
 }
 
 const VideoList: React.FC<VideoListProps> = ({ sections, currentVideoIndex, videoList, onSelect }) => {
   // Map für schnellen Zugriff auf aktuelle Video-Daten
-  const videoMap = React.useMemo(() => new Map(videoList.map((v) => [v.id, v])), [videoList]);
+  const videoMap = useMemo(() => new Map(videoList.map((v) => [v.id, v])), [videoList]);
 
-  // Sections mit aktuellen Video-Objekten mergen
-  const mergedSections = React.useMemo(() => {
-    return sections.map((section) => ({
-      ...section,
-      videos: section.videos.map((v) => videoMap.get(v.id)).filter((v): v is MockDataAcademy => !!v && v.isLive),
-    }));
-  }, [sections, videoMap]);
-
-  // Finde alle erlaubten Videos (isComplete==true oder das erste nicht-komplette)
-  const firstIncompleteIndex = videoList.findIndex((v) => !v.isCompleted);
-  const selectableIndices = new Set(
-    videoList.map((v, idx) => (v.isCompleted || idx === firstIncompleteIndex ? idx : null)).filter((v) => v !== null) as number[]
+  // Sections mit aktuellen Video-Objekten mergen, nur Live-Videos anzeigen
+  const mergedSections = useMemo(
+    () =>
+      sections.map((section) => ({
+        ...section,
+        videos: section.videos.map((v) => videoMap.get(v.id)).filter((v): v is MockDataAcademy => !!v && v.isLive),
+      })),
+    [sections, videoMap]
   );
 
-  // Hole Index im flat videoList für ein Video
+  // Finde Index des ersten nicht-abgeschlossenen Videos
+  const firstIncompleteIndex = useMemo(() => videoList.findIndex((v) => !v.isCompleted), [videoList]);
+
+  // Erlaubte auswählbare Videos: alle abgeschlossenen + das erste offene
+  const selectableIndices = useMemo(
+    () =>
+      new Set(
+        videoList.map((v, idx) => (v.isCompleted || idx === firstIncompleteIndex ? idx : null)).filter((v): v is number => v !== null)
+      ),
+    [videoList, firstIncompleteIndex]
+  );
+
+  // Hilfsfunktion: Hole Index im Flat-Array für ein Video
   const getFlatIndex = (videoId: string) => videoList.findIndex((v) => v.id === videoId);
 
   return (
@@ -46,7 +61,7 @@ const VideoList: React.FC<VideoListProps> = ({ sections, currentVideoIndex, vide
       <CardContent>
         <ul className="space-y-2 text-sm">
           {mergedSections.map((section) => {
-            // Gibt es ein aktives Video im Kapitel?
+            // Ist ein Video aus diesem Kapitel aktiv?
             const activeIndexInSection = section.videos.findIndex((v) => getFlatIndex(v.id) === currentVideoIndex);
             const isOpen = activeIndexInSection !== -1;
 

@@ -1,3 +1,5 @@
+/* Einstiegs File für die Scalping Academy-Seite */
+
 import MainAcademy from "@/components/students/academy/index";
 import { AcademyCategory } from "@/lib/data/academy-type";
 

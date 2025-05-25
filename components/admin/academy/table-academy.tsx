@@ -1,5 +1,10 @@
 "use client";
 
+/**
+ * Akademie-Tabelle für Videos einer Kategorie.
+ * Zeigt alle Abschnitte und deren Videos. Ermöglicht Bearbeiten/Löschen.
+ */
+
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -27,16 +32,15 @@ type AcademyTableProps = {
 export const AcademyTable: React.FC<AcademyTableProps> = ({ category, reloadTrigger, onEditVideo }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<{ sectionId: string; videoId: string } | null>(null);
-
   const [filteredSections, setFilteredSections] = useState<AcademySection[]>([]);
 
-  // Lade die Sections aus dem LocalStorage nach Kategorie/Reload
+  // Lädt die Abschnitte aus dem LocalStorage nach Kategorie/Reload
   useEffect(() => {
     const sections = AcademyLocalStorageService.getSectionsByCategorySorted(category, false);
     setFilteredSections(sections);
   }, [reloadTrigger, category]);
 
-  // Video löschen aus State und LocalStorage
+  // Entfernt Video aus State und LocalStorage
   const handleRemove = (sectionId: string, videoId: string) => {
     const updatedSections = filteredSections.map((section) =>
       section.id === sectionId ? { ...section, videos: section.videos.filter((v) => v.id !== videoId) } : section
@@ -45,13 +49,13 @@ export const AcademyTable: React.FC<AcademyTableProps> = ({ category, reloadTrig
     AcademyLocalStorageService.removeVideo(videoId);
   };
 
-  // Delete Dialog öffnen
+  // Öffnet "Löschen bestätigen"-Dialog
   const handleAskDelete = (sectionId: string, videoId: string) => {
     setDeleteTarget({ sectionId, videoId });
     setDeleteDialogOpen(true);
   };
 
-  // Bestätigen: Video löschen
+  // Bestätigt das Löschen eines Videos
   const handleConfirmDelete = () => {
     if (deleteTarget) {
       handleRemove(deleteTarget.sectionId, deleteTarget.videoId);
@@ -62,6 +66,7 @@ export const AcademyTable: React.FC<AcademyTableProps> = ({ category, reloadTrig
 
   return (
     <div className="mb-8">
+      {/* Dialog zum Löschen von Videos */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -77,6 +82,7 @@ export const AcademyTable: React.FC<AcademyTableProps> = ({ category, reloadTrig
         </AlertDialogContent>
       </AlertDialog>
 
+      {/* Für jede Section eine Tabelle */}
       {filteredSections.map((section) => (
         <div key={section.id} className="mb-6">
           <h2 className="font-semibold text-lg mb-2">{section.title}</h2>
@@ -88,7 +94,7 @@ export const AcademyTable: React.FC<AcademyTableProps> = ({ category, reloadTrig
                 <TableHead>Beschreibung</TableHead>
                 <TableHead>Video</TableHead>
                 <TableHead>Live</TableHead>
-                <TableHead>Action</TableHead>
+                <TableHead>Aktion</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

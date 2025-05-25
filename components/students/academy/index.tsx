@@ -1,6 +1,11 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+/**
+ * Haupt-Komponente für den Videoplayer einer Academy-Kategorie (Intraday / Scalping).
+ * Video, Button Prev / Next, Beschreibung und Nodes, Fortschritt und Kapitelübersicht.
+ */
+
+import React, { useEffect, useMemo, useState, useCallback } from "react";
 import ButtonBarVideo from "./button-bar";
 import ContentVideo from "./content";
 import ProgressBar from "./progressbar";
@@ -9,94 +14,133 @@ import VideoList from "./video-list";
 import { AcademyCategory, AcademySection, MockDataAcademy } from "@/lib/data/academy-type";
 import { AcademyLocalStorageService } from "@/lib/data/localStorage";
 
-// Hilfsfunktion: Updated Sections mit aktuellem VideoState mergen
-function mergeSectionsWithVideoStates(sections: AcademySection[], videoStates: MockDataAcademy[]) {
-  const stateById = Object.fromEntries(videoStates.map((v) => [v.id, v]));
+/**
+ * Hilfsfunktion: Merged Sections mit aktuellen Video-States (z.B. isCompleted).
+ * Für jedes Video in jeder Section werden Status-Informationen aus stateById gemergt.
+ */
+function mergeSectionsWithVideoStates(sections: AcademySection[], stateById: Map<string, MockDataAcademy>): AcademySection[] {
   return sections.map((section) => ({
     ...section,
     videos: section.videos.map((v) => ({
       ...v,
-      ...stateById[v.id],
+      ...stateById.get(v.id),
     })),
   }));
 }
 
-const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
+const VideoPlayerPage: React.FC<{ category: AcademyCategory }> = ({ category }) => {
+  // State für die geladenen Kapitel (Sections) aus dem Storage
   const [sections, setSections] = useState<AcademySection[]>([]);
+  // State für alle Videos dieser Kategorie (als Flat-Array)
   const [videoStates, setVideoStates] = useState<MockDataAcademy[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // Index des aktuell ausgewählten Videos im Flat-Array
+  const [currentVideoIdx, setCurrentVideoIdx] = useState(0);
+  // Aktiver Tab: "description" für Beschreibung, "note" für Notiz
   const [activeTab, setActiveTab] = useState<"description" | "note">("description");
-  const [hasInitialized, setHasInitialized] = useState(false);
 
-  // Lade sortierte Sections aus LocalStorage
+  /**
+   * Effekt: Lädt Sections und initialisiert Video-Liste & aktuellen Index bei Kategorie-Wechsel.
+   * - Holt die Sections aus dem Storage.
+   * - Baut ein Flat-Array aller Videos (sortiert) für einfachere Navigation.
+   * - Setzt den Index auf das erste nicht-abgeschlossene Video (oder auf 0).
+   */
   useEffect(() => {
-    const sections = AcademyLocalStorageService.getSectionsByCategorySorted(category, false);
-    setSections(sections);
+    const loadedSections = AcademyLocalStorageService.getSectionsByCategorySorted(category, true);
+    setSections(loadedSections);
+
+    // Erzeuge eine flache Liste aller Videos aus allen Sections
+    const flatVideos = loadedSections.flatMap((section) => section.videos);
+    setVideoStates(flatVideos);
+
+    // Finde das erste nicht abgeschlossene Video, sonst wähle das erste Video
+    const firstIncompleteIdx = flatVideos.findIndex((v) => !v.isCompleted);
+    setCurrentVideoIdx(firstIncompleteIdx !== -1 ? firstIncompleteIdx : 0);
   }, [category]);
 
-  // Initialisiere VideoStates & Index nur einmal beim ersten Laden
-  useEffect(() => {
-    if (hasInitialized || sections.length === 0) return;
+  /**
+   * Memo: Mapping von Video-ID auf Video-Objekt für schnellen Zugriff beim Mergen.
+   */
+  const stateById = useMemo(() => new Map(videoStates.map((v) => [v.id, v])), [videoStates]);
 
-    const initialVideos = sections
-      .slice()
-      .sort((a, b) => a.orderId - b.orderId)
-      .flatMap((section) => section.videos.slice().sort((a, b) => a.orderId - b.orderId));
+  /**
+   * Memo: Sections mit aktuellem Video-Status (isCompleted etc.) für die Kapitelübersicht.
+   */
+  const mergedSections = useMemo(() => mergeSectionsWithVideoStates(sections, stateById), [sections, stateById]);
 
-    setVideoStates(initialVideos);
+  /**
+   * Memo: Berechnet die Anzahl abgeschlossener Videos und den Fortschritt in Prozent.
+   */
+  const completedCount = useMemo(() => videoStates.filter((v) => v.isCompleted).length, [videoStates]);
+  const progress = useMemo(() => Math.round((completedCount / videoStates.length) * 100), [completedCount, videoStates.length]);
 
-    const firstIncompleteIndex = initialVideos.findIndex((v) => !v.isCompleted);
-    setCurrentIndex(firstIncompleteIndex !== -1 ? firstIncompleteIndex : 0);
-    setHasInitialized(true);
+  // --- Steuerungsfunktionen und Callbacks ---
 
-  }, [sections, hasInitialized]);
+  /**
+   * Callback: Navigiert zum vorherigen Video.
+   */
+  const handlePrev = useCallback(() => setCurrentVideoIdx((i) => Math.max(0, i - 1)), []);
 
-  const mergedSections = useMemo(() => mergeSectionsWithVideoStates(sections, videoStates), [sections, videoStates]);
+  /**
+   * Callback: Navigiert zum nächsten Video.
+   */
+  const handleNext = useCallback(() => setCurrentVideoIdx((i) => Math.min(videoStates.length - 1, i + 1)), [videoStates.length]);
 
+  /**
+   * Callback: Setzt oder entfernt den "abgeschlossen"-Status für das aktuelle Video.
+   * Aktualisiert sowohl den lokalen State als auch den LocalStorage.
+   */
+  const handleCheck = useCallback(
+    (checked: boolean) => {
+      setVideoStates((states) => {
+        const updated = [...states];
+        updated[currentVideoIdx] = { ...updated[currentVideoIdx], isCompleted: checked };
+        return updated;
+      });
+      AcademyLocalStorageService.setVideoCompleted(videoStates[currentVideoIdx].id, checked);
+    },
+    [currentVideoIdx, videoStates]
+  );
+
+  /**
+   * Callback: Wechselt den aktiven Tab (zwischen Beschreibung und Notiz).
+   */
+  const handleTabChange = useCallback((value: "description" | "note") => setActiveTab(value), []);
+
+  /**
+   * Callback: Zeigt eine Abschlussmeldung an, wenn der Kurs beendet wird.
+   */
+  const handleFinish = useCallback(() => window.alert("Kurs abgeschlossen!"), []);
+
+  /**
+   * Callback: Navigiert zu einem ausgewählten Video aus der Kapitelübersicht.
+   */
+  const handleVideoSelect = useCallback((idx: number) => setCurrentVideoIdx(idx), []);
+
+  // --- Fallback: Zeige Hinweis, falls keine Daten geladen wurden ---
   if (sections.length === 0 || videoStates.length === 0) {
-    return <div className="w-full max-w-[2400px] mx-auto p-4">No data available</div>;
+    return <div className="w-full max-w-[2400px] mx-auto p-4">Keine Daten verfügbar</div>;
   }
 
-  const completedCount = videoStates.filter((v) => v.isCompleted).length;
-  const progress = Math.round((completedCount / videoStates.length) * 100);
-  const currentVideo = videoStates[currentIndex];
-  const isLastVideo = currentIndex === videoStates.length - 1;
+  // --- Rendering der eigentlichen Seite ---
 
-  const handlePrev = () => setCurrentIndex((i) => Math.max(0, i - 1));
-  const handleNext = () => setCurrentIndex((i) => Math.min(videoStates.length - 1, i + 1));
-
-  const handleCheck = (checked: boolean) => {
-
-    setVideoStates((states) => {
-      const newStates = [...states];
-      newStates[currentIndex] = {
-        ...newStates[currentIndex],
-        isCompleted: checked,
-      };
-      return newStates;
-    });
-
-    AcademyLocalStorageService.setVideoCompleted(currentVideo.id, checked);
-  };
-  const handleTabChange = (value: "description" | "note") => setActiveTab(value);
-  const handleFinish = () => {
-    window.alert("Kurs abgeschlossen!");
-  };
+  // Hole aktuelles Video-Objekt und prüfe, ob es das letzte Video ist
+  const currentVideo = videoStates[currentVideoIdx];
+  const isLastVideo = currentVideoIdx === videoStates.length - 1;
 
   return (
     <div className="w-full max-w-[2400px] mx-auto p-4 space-y-4">
+      {/* Titel des aktuellen Videos */}
       <h1 className="text-3xl font-bold">{currentVideo.title}</h1>
+
+      {/* Mobile-Ansicht: Fortschritt und Kapitelübersicht oben */}
       <div className="flex flex-col space-y-4 lg:hidden">
         <ProgressBar progress={progress} />
-        <VideoList
-          sections={mergedSections}
-          currentVideoIndex={currentIndex}
-          videoList={videoStates}
-          onSelect={(idx) => setCurrentIndex(idx)}
-        />
+        <VideoList sections={mergedSections} currentVideoIndex={currentVideoIdx} videoList={videoStates} onSelect={handleVideoSelect} />
       </div>
 
+      {/* Desktop-Layout: Video, Navigation, Beschreibung/Notiz, Fortschritt, Kapitel */}
       <div className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-6">
+        {/* Linke Seite: Video, Navigation und Beschreibung/Notiz */}
         <div className="lg:col-span-8 flex flex-col space-y-4">
           <VideoEmbed src={currentVideo.videoUrl} title={currentVideo.title} />
           <ButtonBarVideo
@@ -105,7 +149,7 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
             onPrev={handlePrev}
             onNext={handleNext}
             onFinish={handleFinish}
-            disablePrev={currentIndex === 0}
+            disablePrev={currentVideoIdx === 0}
             disableNext={isLastVideo}
             isLast={isLastVideo}
             onCheck={handleCheck}
@@ -114,14 +158,10 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
           />
           <ContentVideo description={currentVideo.description} note={currentVideo.note} activeTab={activeTab} />
         </div>
+        {/* Rechte Seite: Fortschritt und Kapitelübersicht */}
         <div className="lg:col-span-4 mt-6 lg:mt-0 hidden lg:flex flex-col space-y-4">
           <ProgressBar progress={progress} />
-          <VideoList
-            sections={mergedSections}
-            currentVideoIndex={currentIndex}
-            videoList={videoStates}
-            onSelect={(idx) => setCurrentIndex(idx)}
-          />
+          <VideoList sections={mergedSections} currentVideoIndex={currentVideoIdx} videoList={videoStates} onSelect={handleVideoSelect} />
         </div>
       </div>
     </div>

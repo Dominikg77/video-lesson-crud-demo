@@ -1,8 +1,14 @@
 "use client";
 
+/**
+ * Komponente für den Rollenwechsel im Sidebar-Header.
+ * Zeigt aktuelle Rolle und ermöglicht die Auswahl einer anderen Rolle.
+ * Die Rollen können später aus dem Backend anahand der Nutzer-ID geladen werden.
+ * Die Rolle, beinfluss die Darstellung und Berechtigungen in der App.
+ */
+
 import * as React from "react";
 import { ChevronsUpDown } from "lucide-react";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,9 +32,11 @@ export function RoleSwitcher({ roles }: { roles: Role[] }) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
+              {/* Rollen-Logo */}
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-sidebar-primary-foreground">
                 <activeRole.logo className="size-4" />
               </div>
+              {/* Rollenname und Plan */}
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{activeRole.name}</span>
                 <span className="truncate text-xs">{activeRole.plan}</span>

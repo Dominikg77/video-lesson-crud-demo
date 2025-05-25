@@ -23,7 +23,7 @@ const formSchema = z.object({
   sectionId: z.string().min(1, "Kapitel auswählen"),
   description: z.string().min(1, "Beschreibung ist erforderlich"),
   videoUrl: z.string().url("Bitte eine gültige URL eingeben"),
-  orderId: z.number().min(1, "Reihenfolge muss größer als 0 sein"),
+  orderId: z.number().min(1, "Reihenfolge muss grösser als 0 sein"),
   isLive: z.boolean(),
 });
 

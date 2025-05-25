@@ -130,7 +130,7 @@ const VideoPlayerPage: React.FC<{ category: AcademyCategory }> = ({ category }) 
   return (
     <div className="w-full max-w-[2400px] mx-auto p-4 space-y-4">
       {/* Titel des aktuellen Videos */}
-      <h1 className="text-3xl font-bold">{currentVideo.title}</h1>
+      <h1 className=" font-bold  sm:text-xl  lg:text-3xl">{currentVideo.title}</h1>
 
       {/* Mobile-Ansicht: Fortschritt und Kapitelübersicht oben */}
       <div className="flex flex-col space-y-4 lg:hidden">

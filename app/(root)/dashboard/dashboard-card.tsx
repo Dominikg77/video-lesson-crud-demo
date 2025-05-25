@@ -13,7 +13,7 @@ const DashboardCard = ({ title, description, link }: DashboardCardData) => {
   return (
     // Die gesamte Karte ist als Link klickbar
     <Link href={link} className="block">
-      <Card className="w-[350px] cursor-pointer hover:shadow-lg transition-shadow">
+      <Card className="w-full max-w-[350px] cursor-pointer hover:shadow-lg transition-shadow">
         <CardHeader>
           {/* Titel der Karte */}
           <CardTitle>{title}</CardTitle>

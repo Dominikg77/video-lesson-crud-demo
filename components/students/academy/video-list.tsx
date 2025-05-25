@@ -74,47 +74,49 @@ const VideoList: React.FC<VideoListProps> = ({ sections, currentVideoIndex, vide
   return (
     <>
       {/* Mobile-Ansicht: Dropdown-Menü */}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            className="w-full max-w-[80vw] min-w-0 h-auto min-h-10 text-sm px-2 py-1 flex items-center justify-between overflow-hidden">
-            <span className="truncate block flex-1 text-left">{currentVideo.title}</span>
-            <ChevronDown className="ml-1 h-4 w-4 shrink-0" />
-          </Button>
-        </DropdownMenuTrigger>
+      <div className="lg:hidden">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-full max-w-[80vw] min-w-0 h-auto min-h-10 text-sm px-2 py-1 flex items-center justify-between overflow-hidden">
+              <span className="truncate block flex-1 text-left">{currentVideo.title}</span>
+              <ChevronDown className="ml-1 h-4 w-4 shrink-0" />
+            </Button>
+          </DropdownMenuTrigger>
 
-        <DropdownMenuContent side="bottom" align="start" className="max-w-[80vw] w-auto text-sm px-2 py-1">
-          {mergedSections.map((section, sIdx) => (
-            <React.Fragment key={section.id}>
-              {sIdx > 0 && <DropdownMenuSeparator />}
-              <DropdownMenuLabel className="break-words">{section.title}</DropdownMenuLabel>
-              <DropdownMenuGroup>
-                {section.videos.map((video) => {
-                  const idx = getFlatIndex(video.id);
-                  const isSelectable = selectableIndices.has(idx);
-                  const isCompleted = video.isCompleted;
+          <DropdownMenuContent side="bottom" align="start" className="max-w-[80vw] w-auto text-sm px-2 py-1">
+            {mergedSections.map((section, sIdx) => (
+              <React.Fragment key={section.id}>
+                {sIdx > 0 && <DropdownMenuSeparator />}
+                <DropdownMenuLabel className="break-words">{section.title}</DropdownMenuLabel>
+                <DropdownMenuGroup>
+                  {section.videos.map((video) => {
+                    const idx = getFlatIndex(video.id);
+                    const isSelectable = selectableIndices.has(idx);
+                    const isCompleted = video.isCompleted;
 
-                  return (
-                    <DropdownMenuItem
-                      key={video.id}
-                      disabled={!isSelectable}
-                      onSelect={() => isSelectable && onSelect(idx)}
-                      className="flex items-center gap-2">
-                      {isCompleted ? (
-                        <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
-                      ) : (
-                        <Circle className="w-4 h-4 text-muted-foreground shrink-0" />
-                      )}
-                      <span className="break-words text-left">{video.title}</span>
-                    </DropdownMenuItem>
-                  );
-                })}
-              </DropdownMenuGroup>
-            </React.Fragment>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
+                    return (
+                      <DropdownMenuItem
+                        key={video.id}
+                        disabled={!isSelectable}
+                        onSelect={() => isSelectable && onSelect(idx)}
+                        className="flex items-center gap-2">
+                        {isCompleted ? (
+                          <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
+                        ) : (
+                          <Circle className="w-4 h-4 text-muted-foreground shrink-0" />
+                        )}
+                        <span className="break-words text-left">{video.title}</span>
+                      </DropdownMenuItem>
+                    );
+                  })}
+                </DropdownMenuGroup>
+              </React.Fragment>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
       {/* Desktop-Ansicht: Akkordeon-Liste mit Kapiteln */}
       <Card className="hidden lg:block">

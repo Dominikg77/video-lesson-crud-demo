@@ -44,7 +44,6 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
     },
   });
 
-  // Initialwerte bei Dialog-Open setzen (für Edit-Fall)
   useEffect(() => {
     if (initialValues) {
       form.reset({ ...form.getValues(), ...initialValues });
@@ -56,6 +55,7 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
         description: "",
         videoUrl: "",
         isLive: false,
+        orderId: 0,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,13 +63,7 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
 
   return (
     <Form {...form}>
-      <form
-        id="add-edit-form"
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="grid grid-cols-1 gap-6 w-full"
-        // max-w-3xl px-2 können optional raus
-      >
-        {/* Titel: auf ganze Breite */}
+      <form id="add-edit-form" onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-6 w-full">
         <div>
           <FormField
             control={form.control}
@@ -85,8 +79,6 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
             )}
           />
         </div>
-
-        {/* Kategorie und Kapitel: nebeneinander */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -132,8 +124,6 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
             )}
           />
         </div>
-
-        {/* Beschreibung: auf ganze Breite */}
         <div>
           <FormField
             control={form.control}
@@ -154,7 +144,6 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
             )}
           />
         </div>
-
         <FormField
           control={form.control}
           name="videoUrl"
@@ -168,8 +157,6 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
             </FormItem>
           )}
         />
-
-        {/* VideoUrl und Live: nebeneinander */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
           <FormField
             control={form.control}
@@ -191,7 +178,6 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
               </FormItem>
             )}
           />
-
           <FormField
             control={form.control}
             name="isLive"

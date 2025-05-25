@@ -24,3 +24,12 @@ export interface AcademySection {
     category: AcademyCategory;
     videos: MockDataAcademy[];
 }
+
+export interface MockDataAcademyAddEdit {
+    orderId: number;
+    sectionId: string;
+    title: string;
+    description: string;
+    videoUrl: string;
+    isLive: boolean;
+}

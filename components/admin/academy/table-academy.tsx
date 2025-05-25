@@ -1,13 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { AcademyLocalStorageService } from "@/lib/data/localStorage";
 import { AcademyCategory, AcademySection } from "@/lib/data/academy-type";
-import { EditAddDialog } from "./edit-add-dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,46 +20,38 @@ import {
 
 type AcademyTableProps = {
   category: AcademyCategory;
+  reloadTrigger?: number;
+  onEditVideo?: (videoId: string) => void;
 };
 
-export const AcademyTable: React.FC<AcademyTableProps> = ({ category }) => {
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [selectedVideoId, setSelectedVideoId] = useState<string | undefined>(undefined);
-
-  // Für das AlertDialog
+export const AcademyTable: React.FC<AcademyTableProps> = ({ category, reloadTrigger, onEditVideo }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<{ sectionId: string; videoId: string } | null>(null);
 
   const [filteredSections, setFilteredSections] = useState<AcademySection[]>([]);
 
+  // Lade die Sections aus dem LocalStorage nach Kategorie/Reload
   useEffect(() => {
     const sections = AcademyLocalStorageService.getSectionsByCategorySorted(category, false);
     setFilteredSections(sections);
-  }, [category]);
+  }, [reloadTrigger, category]);
 
-  // Entfernt ein Video aus einer Section
+  // Video löschen aus State und LocalStorage
   const handleRemove = (sectionId: string, videoId: string) => {
     const updatedSections = filteredSections.map((section) =>
       section.id === sectionId ? { ...section, videos: section.videos.filter((v) => v.id !== videoId) } : section
     );
     setFilteredSections(updatedSections);
-
-    AcademyLocalStorageService.removeVideo(videoId); 
+    AcademyLocalStorageService.removeVideo(videoId);
   };
 
-  // Edit-Handler für TableRow
-  const handleEdit = (videoId: string) => {
-    setSelectedVideoId(videoId);
-    setEditDialogOpen(true);
-  };
-
-  // Löschvorgang starten (öffnet Dialog)
+  // Delete Dialog öffnen
   const handleAskDelete = (sectionId: string, videoId: string) => {
     setDeleteTarget({ sectionId, videoId });
     setDeleteDialogOpen(true);
   };
 
-  // Wirklich löschen, wenn bestätigt
+  // Bestätigen: Video löschen
   const handleConfirmDelete = () => {
     if (deleteTarget) {
       handleRemove(deleteTarget.sectionId, deleteTarget.videoId);
@@ -71,9 +62,6 @@ export const AcademyTable: React.FC<AcademyTableProps> = ({ category }) => {
 
   return (
     <div className="mb-8">
-      <EditAddDialog open={editDialogOpen} onOpenChange={setEditDialogOpen} videoId={selectedVideoId} />
-
-      {/* AlertDialog für Löschen */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -107,7 +95,10 @@ export const AcademyTable: React.FC<AcademyTableProps> = ({ category }) => {
               {section.videos
                 .sort((a, b) => a.orderId - b.orderId)
                 .map((video) => (
-                  <TableRow key={video.id} className="cursor-pointer hover:bg-muted/50" onClick={() => handleEdit(video.id)}>
+                  <TableRow
+                    key={video.id}
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() => onEditVideo && onEditVideo(video.id)}>
                     <TableCell>{video.orderId}</TableCell>
                     <TableCell>{video.title}</TableCell>
                     <TableCell>

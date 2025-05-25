@@ -13,10 +13,11 @@ import { useEffect } from "react";
 
 const formSchema = z.object({
   title: z.string().min(1, "Titel ist erforderlich"),
-  category: z.string().min(1, "Kategorie auswählen"),
-  selection: z.string().min(1, "Kapitel auswählen"),
+  categoryId: z.string().min(1, "Kategorie auswählen"),
+  sectionId: z.string().min(1, "Kapitel auswählen"),
   description: z.string().min(1, "Beschreibung ist erforderlich"),
   videoUrl: z.string().url("Bitte eine gültige URL eingeben"),
+  orderId: z.number().min(1, "Reihenfolge muss größer als 0 sein"),
   isLive: z.boolean(),
 });
 
@@ -33,11 +34,12 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      category: "",
-      selection: "",
+      categoryId: "",
+      sectionId: "",
       description: "",
       videoUrl: "",
       isLive: false,
+      orderId: 0,
       ...initialValues,
     },
   });
@@ -49,8 +51,8 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
     } else {
       form.reset({
         title: "",
-        category: "",
-        selection: "",
+        categoryId: "",
+        sectionId: "",
         description: "",
         videoUrl: "",
         isLive: false,
@@ -88,7 +90,7 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
-            name="category"
+            name="categoryId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Kategorie</FormLabel>
@@ -109,7 +111,7 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
           />
           <FormField
             control={form.control}
-            name="selection"
+            name="sectionId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Kapitel</FormLabel>
@@ -153,21 +155,43 @@ export default function AddEditForm({ initialValues, onSubmit, disabled }: AddEd
           />
         </div>
 
+        <FormField
+          control={form.control}
+          name="videoUrl"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Video Url</FormLabel>
+              <FormControl>
+                <Input placeholder="embed Youtube" type="text" {...field} disabled={disabled} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         {/* VideoUrl und Live: nebeneinander */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
           <FormField
             control={form.control}
-            name="videoUrl"
+            name="orderId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Video Url</FormLabel>
+                <FormLabel>Reihenfolge</FormLabel>
                 <FormControl>
-                  <Input placeholder="embed Youtube" type="text" {...field} disabled={disabled} />
+                  <Input
+                    placeholder=""
+                    type="number"
+                    {...field}
+                    value={field.value ?? ""}
+                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                    disabled={disabled}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="isLive"

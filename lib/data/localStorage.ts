@@ -17,25 +17,30 @@ export const AcademyLocalStorageService = {
     },
 
 
-    getSectionsByCategorySorted: (category: AcademyCategory, isLiveFilter: boolean = false): AcademySection[] => {
-        const sections: AcademySection[] = AcademyLocalStorageService.getSections()
+    getSectionsByCategorySorted: (
+        category: AcademyCategory,
+        isLiveFilter: boolean = false
+    ): AcademySection[] => {
+        const sections: AcademySection[] = AcademyLocalStorageService.getSections();
 
         // Filtern nach Kategorie
         const filtered = sections.filter(section => section.category === category);
 
-        // Falls Live-Filter aktiv ist, filtere Videos innerhalb jeder Section
-        const withLiveFilter = isLiveFilter
-            ? filtered
-                .map(section => ({
-                    ...section,
-                    videos: section.videos.filter(video => video.isLive),
-                }))
-                .filter(section => section.videos.length > 0)
-            : filtered;
+        // Videos in jeder Section sortieren (vor LiveFilter, damit Sortierung auch da stimmt)
+        const sortedVideosPerSection = filtered.map(section => ({
+            ...section,
+            videos: section.videos
+                .filter(video => !isLiveFilter || video.isLive) // optionaler LiveFilter
+                .sort((a, b) => a.orderId - b.orderId), // sortiere Videos
+        }));
 
-        // Sortieren nach orderId
-        return withLiveFilter.sort((a, b) => a.orderId - b.orderId);
+        // Nur Sections behalten, die noch Videos haben (nach Filterung)
+        const nonEmptySections = sortedVideosPerSection.filter(section => section.videos.length > 0);
+
+        // Sortiere Sections nach orderId
+        return nonEmptySections.sort((a, b) => a.orderId - b.orderId);
     },
+
 
 
     // Set Completed-Status eines Videos
@@ -80,14 +85,6 @@ export const AcademyLocalStorageService = {
         AcademyLocalStorageService.updateVideo(videoId, update);
     },
 
-    // Hilfsfunktion: Video suchen (liefert [sectionIdx, videoIdx] oder [-1, -1])
-    findVideoById: (sections: AcademySection[], videoId: string): [number, number] => {
-        for (let sIdx = 0; sIdx < sections.length; sIdx++) {
-            const vIdx = sections[sIdx].videos.findIndex((v) => v.id === videoId);
-            if (vIdx !== -1) return [sIdx, vIdx];
-        }
-        return [-1, -1];
-    },
 
     // Video updaten (z.B. isCompleted), partialUpdate = {isCompleted: true}
     updateVideo: (videoId: string, partialUpdate: Partial<MockDataAcademy>) => {
@@ -112,4 +109,15 @@ export const AcademyLocalStorageService = {
             localStorage.setItem(STORAGE_KEY_ACADEMY_CONTENT, JSON.stringify(sections));
         }
     },
+
+
+    // Hilfsfunktion: Video suchen (liefert [sectionIdx, videoIdx] oder [-1, -1])
+    findVideoById: (sections: AcademySection[], videoId: string): [number, number] => {
+        for (let sIdx = 0; sIdx < sections.length; sIdx++) {
+            const vIdx = sections[sIdx].videos.findIndex((v) => v.id === videoId);
+            if (vIdx !== -1) return [sIdx, vIdx];
+        }
+        return [-1, -1];
+    },
+
 };

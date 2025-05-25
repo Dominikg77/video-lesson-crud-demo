@@ -118,12 +118,12 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
         </div>
         <div className="lg:col-span-4 mt-6 lg:mt-0 hidden lg:flex flex-col space-y-4">
           <ProgressBar progress={progress} />
-          {/* <VideoList
+          <VideoList
             sections={mergedSections}
             currentVideoIndex={currentIndex}
             videoList={videoStates}
             onSelect={(idx) => setCurrentIndex(idx)}
-          /> */}
+          />
         </div>
       </div>
     </div>

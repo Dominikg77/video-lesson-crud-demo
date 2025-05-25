@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -35,18 +36,23 @@ export const EditAddDialog: React.FC<EditAddDialogProps> = ({ open, onOpenChange
     if (isEdit && videoId) {
       AcademyLocalStorageService.editVideo(videoId, data);
     } else {
-      // Beispiel: Section-Id müsstest du dann ggf. aus dem Dialog-Context mitgeben
-      AcademyLocalStorageService.addVideo(/*sectionId*/ "DUMMY_SECTION_ID", { ...data, id: crypto.randomUUID() });
+      // Neues Video hinzufügen
+      const addData: MockDataAcademy = {
+        ...data,
+        id: crypto.randomUUID(),
+        isCompleted: false,
+      } satisfies MockDataAcademy; 
+
+      AcademyLocalStorageService.addVideo(data.sectionId, addData);
     }
 
     setSubmittedData(data);
     setIsSubmitting(false);
 
     // Dialog kann hier geschlossen werden, falls gewünscht:
-    // onOpenChange(false);
+    onOpenChange(false);
 
-    // Daten ausloggen (im Dialog sichtbar machen)
-    console.log("Formular gespeichert:", data);
+
   };
 
   return (

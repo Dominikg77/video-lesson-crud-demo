@@ -1,5 +1,4 @@
 "use client";
-
 /**
  * Kapitel- und Videoübersicht:
  * - Mobile: shadcn/ui DropdownMenu außerhalb der Card, volle Breite, keine Überschrift
@@ -8,7 +7,6 @@
  * - Im Dropdown wird beim Selektieren keine aktuelle Auswahl hervorgehoben
  * - Dropdown-Button zeigt aktuellen Section- und Video-Titel, ist abgeschnitten, nimmt die volle Breite ein
  */
-
 import React, { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MockDataAcademy } from "@/lib/data/academy-type";
@@ -24,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 
+// Struktur für einen Abschnitt mit zugehörigen Videos
 type AcademySection = {
   id: string;
   title: string;
@@ -31,18 +30,20 @@ type AcademySection = {
   videos: MockDataAcademy[];
 };
 
+// Props für die Komponente
 interface VideoListProps {
   sections: AcademySection[];
   currentVideoIndex: number;
-  videoList: MockDataAcademy[]; // Flat-Liste, sortiert
+  videoList: MockDataAcademy[]; // Flache Liste aller Videos
   onSelect: (index: number) => void;
 }
 
+// Hauptkomponente zur Anzeige der Videoübersicht
 const VideoList: React.FC<VideoListProps> = ({ sections, currentVideoIndex, videoList, onSelect }) => {
-  // Map für schnellen Zugriff auf aktuelle Video-Daten
+  // Erstelle eine Map für schnellen Zugriff auf Video-Informationen per ID
   const videoMap = useMemo(() => new Map(videoList.map((v) => [v.id, v])), [videoList]);
 
-  // Sections mit aktuellen Video-Objekten mergen, nur Live-Videos anzeigen
+  // Mische die Sektionen mit den aktuellen Video-Objekten und filtere nur Live-Videos
   const mergedSections = useMemo(
     () =>
       sections.map((section) => ({
@@ -52,10 +53,10 @@ const VideoList: React.FC<VideoListProps> = ({ sections, currentVideoIndex, vide
     [sections, videoMap]
   );
 
-  // Finde Index des ersten nicht-abgeschlossenen Videos
+  // Finde den Index des ersten noch nicht abgeschlossenen Videos
   const firstIncompleteIndex = useMemo(() => videoList.findIndex((v) => !v.isCompleted), [videoList]);
 
-  // Erlaubte auswählbare Videos: alle abgeschlossenen + das erste offene
+  // Erstelle eine Set-Liste aller auswählbaren Video-Indizes (bereits abgeschlossen oder erstes offenes)
   const selectableIndices = useMemo(
     () =>
       new Set(
@@ -64,71 +65,65 @@ const VideoList: React.FC<VideoListProps> = ({ sections, currentVideoIndex, vide
     [videoList, firstIncompleteIndex]
   );
 
-  // Hilfsfunktion: Hole Index im Flat-Array für ein Video
+  // Hilfsfunktion: Ermittle den Index in der flachen Liste anhand der Video-ID
   const getFlatIndex = (videoId: string) => videoList.findIndex((v) => v.id === videoId);
 
-  // Aktuelle Section und aktuelles Video ermitteln
-  const currentSection = mergedSections.find((section) => section.videos.some((video) => getFlatIndex(video.id) === currentVideoIndex));
+  // Aktuell ausgewähltes Video (Fallback-Titel bei Fehler)
   const currentVideo = videoList[currentVideoIndex] || { title: "Unbekannt", id: "" };
 
   return (
     <>
-      {/* Mobile: Dropdown außerhalb der Card, volle Breite */}
-      <div className="block lg:hidden w-full mb-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="w-full h-auto min-h-12 flex items-center px-3 justify-between py-2"
-              style={{ minWidth: 0 }}>
-              <span className="block w-full min-w-0 break-words text-left">{currentSection ? currentVideo.title : currentVideo.title}</span>
-              <ChevronDown className="ml-2 h-4 w-4 shrink-0" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            side="bottom"
-            align="start"
-            className="min-w-[var(--radix-dropdown-menu-trigger-width)] max-w-full overflow-x-hidden">
-            {mergedSections.map((section, sIdx) => (
-              <React.Fragment key={section.id}>
-                {sIdx > 0 && <DropdownMenuSeparator />}
-                <DropdownMenuLabel className="break-words">{section.title}</DropdownMenuLabel>
-                <DropdownMenuGroup>
-                  {section.videos.map((video) => {
-                    const idx = getFlatIndex(video.id);
-                    const isSelectable = selectableIndices.has(idx);
-                    const isCompleted = video.isCompleted;
-                    return (
-                      <DropdownMenuItem
-                        key={video.id}
-                        disabled={!isSelectable}
-                        onSelect={() => isSelectable && onSelect(idx)}
-                        className="flex items-center">
-                        {isCompleted ? (
-                          <CheckCircle className="w-4 h-4 mr-2 text-green-600 shrink-0" />
-                        ) : (
-                          <Circle className="w-4 h-4 mr-2 text-muted-foreground shrink-0" />
-                        )}
-                        <span className="break-words text-left">{video.title}</span>
-                      </DropdownMenuItem>
-                    );
-                  })}
-                </DropdownMenuGroup>
-              </React.Fragment>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+      {/* Mobile-Ansicht: Dropdown-Menü */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            className="w-full max-w-[80vw] min-w-0 h-auto min-h-10 text-sm px-2 py-1 flex items-center justify-between overflow-hidden">
+            <span className="truncate block flex-1 text-left">{currentVideo.title}</span>
+            <ChevronDown className="ml-1 h-4 w-4 shrink-0" />
+          </Button>
+        </DropdownMenuTrigger>
 
-      {/* Desktop: Akkordeon-Liste */}
-      <Card>
+        <DropdownMenuContent side="bottom" align="start" className="max-w-[80vw] w-auto text-sm px-2 py-1">
+          {mergedSections.map((section, sIdx) => (
+            <React.Fragment key={section.id}>
+              {sIdx > 0 && <DropdownMenuSeparator />}
+              <DropdownMenuLabel className="break-words">{section.title}</DropdownMenuLabel>
+              <DropdownMenuGroup>
+                {section.videos.map((video) => {
+                  const idx = getFlatIndex(video.id);
+                  const isSelectable = selectableIndices.has(idx);
+                  const isCompleted = video.isCompleted;
+
+                  return (
+                    <DropdownMenuItem
+                      key={video.id}
+                      disabled={!isSelectable}
+                      onSelect={() => isSelectable && onSelect(idx)}
+                      className="flex items-center gap-2">
+                      {isCompleted ? (
+                        <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
+                      ) : (
+                        <Circle className="w-4 h-4 text-muted-foreground shrink-0" />
+                      )}
+                      <span className="break-words text-left">{video.title}</span>
+                    </DropdownMenuItem>
+                  );
+                })}
+              </DropdownMenuGroup>
+            </React.Fragment>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {/* Desktop-Ansicht: Akkordeon-Liste mit Kapiteln */}
+      <Card className="hidden lg:block">
         <CardHeader className="hidden lg:block">
           <CardTitle>Kapitelübersicht</CardTitle>
         </CardHeader>
         <CardContent>
           <ul className="space-y-2 text-sm hidden lg:block">
             {mergedSections.map((section) => {
-              // Ist ein Video aus diesem Kapitel aktiv?
               const activeIndexInSection = section.videos.findIndex((v) => getFlatIndex(v.id) === currentVideoIndex);
               const isOpen = activeIndexInSection !== -1;
 

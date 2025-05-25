@@ -48,6 +48,8 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
     const firstIncompleteIndex = initialVideos.findIndex((v) => !v.isCompleted);
     setCurrentIndex(firstIncompleteIndex !== -1 ? firstIncompleteIndex : 0);
     setHasInitialized(true);
+
+    console.log("Initial video states:", initialVideos);
   }, [sections, hasInitialized]);
 
   const mergedSections = useMemo(() => mergeSectionsWithVideoStates(sections, videoStates), [sections, videoStates]);
@@ -63,13 +65,21 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
 
   const handlePrev = () => setCurrentIndex((i) => Math.max(0, i - 1));
   const handleNext = () => setCurrentIndex((i) => Math.min(videoStates.length - 1, i + 1));
+
   const handleCheck = (checked: boolean) => {
-    setVideoStates((states) =>
-      states.map((v, idx) => (idx === currentIndex ? { ...v, isCompleted: checked } : v))
-    );
+    console.log("Video completed:", checked, "for video ID:", currentVideo.id);
+
+    setVideoStates((states) => {
+      const newStates = [...states];
+      newStates[currentIndex] = {
+        ...newStates[currentIndex],
+        isCompleted: checked,
+      };
+      return newStates;
+    });
+
     AcademyLocalStorageService.setVideoCompleted(currentVideo.id, checked);
   };
-
   const handleTabChange = (value: "description" | "note") => setActiveTab(value);
   const handleFinish = () => {
     window.alert("Kurs abgeschlossen!");
@@ -87,6 +97,7 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
           onSelect={(idx) => setCurrentIndex(idx)}
         />
       </div>
+
       <div className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-6">
         <div className="lg:col-span-8 flex flex-col space-y-4">
           <VideoEmbed src={currentVideo.videoUrl} title={currentVideo.title} />
@@ -103,20 +114,16 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
             tabValue={activeTab}
             onTabChange={handleTabChange}
           />
-          <ContentVideo
-            description={currentVideo.description}
-            note={currentVideo.note}
-            activeTab={activeTab}
-          />
+          {/* <ContentVideo description={currentVideo.description} note={currentVideo.note} activeTab={activeTab} /> */}
         </div>
         <div className="lg:col-span-4 mt-6 lg:mt-0 hidden lg:flex flex-col space-y-4">
           <ProgressBar progress={progress} />
-          <VideoList
+          {/* <VideoList
             sections={mergedSections}
             currentVideoIndex={currentIndex}
             videoList={videoStates}
             onSelect={(idx) => setCurrentIndex(idx)}
-          />
+          /> */}
         </div>
       </div>
     </div>

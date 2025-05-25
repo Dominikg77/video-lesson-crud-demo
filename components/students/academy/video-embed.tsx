@@ -7,12 +7,13 @@ interface VideoEmbedProps {
 }
 
 const VideoEmbed: React.FC<VideoEmbedProps> = ({ src = "", title = "Video" }) => {
+
   const isYouTube = src && (src.includes("youtube.com") || src.includes("youtu.be"));
   const isVimeo = src && src.includes("vimeo.com");
   const isMp4 = src && src.endsWith(".mp4");
 
   const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <Card className="w-full  mx-auto p-0 rounded-lg">
+    <Card className="w-full mx-auto p-0 rounded-lg">
       <CardContent className="aspect-video p-0 flex items-center justify-center overflow-hidden bg-black rounded-lg">
         {children}
       </CardContent>

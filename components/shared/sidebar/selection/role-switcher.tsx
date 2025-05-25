@@ -16,12 +16,9 @@ import { Role } from "../data/sidebar.type";
 
 export function RoleSwitcher({ roles }: { roles: Role[] }) {
   const { isMobile } = useSidebar();
-
   const [activeRole, setActiveRole] = React.useState(roles && roles.length > 0 ? roles[0] : null);
 
-  if (!activeRole) {
-    return null;
-  }
+  if (!activeRole) return null;
 
   return (
     <SidebarMenu>

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useEffect, useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
@@ -24,7 +24,6 @@ type AcademyTableProps = {
 };
 
 export const AcademyTable: React.FC<AcademyTableProps> = ({ category }) => {
-  const [sections, setSections] = useState<AcademySection[]>([]);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedVideoId, setSelectedVideoId] = useState<string | undefined>(undefined);
 
@@ -32,19 +31,21 @@ export const AcademyTable: React.FC<AcademyTableProps> = ({ category }) => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<{ sectionId: string; videoId: string } | null>(null);
 
+  const [filteredSections, setFilteredSections] = useState<AcademySection[]>([]);
+
   useEffect(() => {
-    const allSections = AcademyLocalStorageService.getSections();
-    setSections(allSections);
-  }, []);
+    const sections = AcademyLocalStorageService.getSectionsByCategorySorted(category, false);
+    setFilteredSections(sections);
+  }, [category]);
 
   // Entfernt ein Video aus einer Section
   const handleRemove = (sectionId: string, videoId: string) => {
-    const updatedSections = sections.map((section) =>
+    const updatedSections = filteredSections.map((section) =>
       section.id === sectionId ? { ...section, videos: section.videos.filter((v) => v.id !== videoId) } : section
     );
-    setSections(updatedSections);
+    setFilteredSections(updatedSections);
 
-    AcademyLocalStorageService.removeVideo(videoId); // Entferne Video aus LocalStorage
+    AcademyLocalStorageService.removeVideo(videoId); 
   };
 
   // Edit-Handler für TableRow
@@ -52,11 +53,6 @@ export const AcademyTable: React.FC<AcademyTableProps> = ({ category }) => {
     setSelectedVideoId(videoId);
     setEditDialogOpen(true);
   };
-
-  // Filtere und sortiere die Sections nach Kategorie und orderId
-  const filteredSections = useMemo(() => {
-    return sections.filter((section) => section.category === category).sort((a, b) => a.orderId - b.orderId);
-  }, [sections, category]);
 
   // Löschvorgang starten (öffnet Dialog)
   const handleAskDelete = (sectionId: string, videoId: string) => {

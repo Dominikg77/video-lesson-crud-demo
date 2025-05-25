@@ -11,63 +11,48 @@ import { AcademyLocalStorageService } from "@/lib/data/localStorage";
 
 // Hilfsfunktion: Updated Sections mit aktuellem VideoState mergen
 function mergeSectionsWithVideoStates(sections: AcademySection[], videoStates: MockDataAcademy[]) {
-  // Map für schnellen Zugriff
   const stateById = Object.fromEntries(videoStates.map((v) => [v.id, v]));
   return sections.map((section) => ({
     ...section,
     videos: section.videos.map((v) => ({
       ...v,
-      ...stateById[v.id], // aktueller State hat Priorität
+      ...stateById[v.id],
     })),
   }));
 }
 
 const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
-  // Daten einmalig laden!
   const [sections, setSections] = useState<AcademySection[]>([]);
   const [videoStates, setVideoStates] = useState<MockDataAcademy[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [activeTab, setActiveTab] = useState<"description" | "note">("description");
+  const [hasInitialized, setHasInitialized] = useState(false);
 
-  // Daten nur EINMAL holen (beim ersten Render)!
+  // Lade sortierte Sections aus LocalStorage
   useEffect(() => {
-    const allSections = AcademyLocalStorageService.getSections();
-    setSections(allSections);
-  }, []);
+    const sections = AcademyLocalStorageService.getSectionsByCategorySorted(category, false);
+    setSections(sections);
+  }, [category]);
 
-  // Kategorie- und Live-Filter im Memo
-  const filteredSections = useMemo(() => {
-    return sections
-      .filter((section) => section.category === category)
-      .map((section) => ({
-        ...section,
-        videos: section.videos.filter((video) => video.isLive),
-      }))
-      .filter((section) => section.videos.length > 0);
-  }, [sections, category]);
-
-  // Flache Liste aller Videos (sortiert)
-  const allVideos = useMemo(
-    () =>
-      filteredSections
-        .slice()
-        .sort((a, b) => a.orderId - b.orderId)
-        .flatMap((section) => section.videos.slice().sort((a, b) => a.orderId - b.orderId)),
-    [filteredSections]
-  );
-
-  // Hier entsteht die aktuellste Section-Liste für VideoList!
-  const mergedSections = useMemo(() => mergeSectionsWithVideoStates(filteredSections, videoStates), [filteredSections, videoStates]);
-
-  // Synchronisiere videoStates mit allVideos
+  // Initialisiere VideoStates & Index nur einmal beim ersten Laden
   useEffect(() => {
-    setVideoStates(allVideos);
-    // Setze aktuellen Index auf erstes unvollständiges Video
-    const firstIncompleteIndex = allVideos.findIndex((v) => !v.isCompleted);
+    if (hasInitialized || sections.length === 0) return;
+
+    const initialVideos = sections
+      .slice()
+      .sort((a, b) => a.orderId - b.orderId)
+      .flatMap((section) => section.videos.slice().sort((a, b) => a.orderId - b.orderId));
+
+    setVideoStates(initialVideos);
+
+    const firstIncompleteIndex = initialVideos.findIndex((v) => !v.isCompleted);
     setCurrentIndex(firstIncompleteIndex !== -1 ? firstIncompleteIndex : 0);
-  }, [allVideos]);
+    setHasInitialized(true);
+  }, [sections, hasInitialized]);
 
-  if (filteredSections.length === 0 || videoStates.length === 0) {
+  const mergedSections = useMemo(() => mergeSectionsWithVideoStates(sections, videoStates), [sections, videoStates]);
+
+  if (sections.length === 0 || videoStates.length === 0) {
     return <div className="w-full max-w-[2400px] mx-auto p-4">No data available</div>;
   }
 
@@ -79,13 +64,13 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
   const handlePrev = () => setCurrentIndex((i) => Math.max(0, i - 1));
   const handleNext = () => setCurrentIndex((i) => Math.min(videoStates.length - 1, i + 1));
   const handleCheck = (checked: boolean) => {
-    setVideoStates((states) => states.map((v, idx) => (idx === currentIndex ? { ...v, isCompleted: checked } : v)));
-    // Optional: persistieren im LocalStorage
+    setVideoStates((states) =>
+      states.map((v, idx) => (idx === currentIndex ? { ...v, isCompleted: checked } : v))
+    );
     AcademyLocalStorageService.setVideoCompleted(currentVideo.id, checked);
   };
 
   const handleTabChange = (value: "description" | "note") => setActiveTab(value);
-
   const handleFinish = () => {
     window.alert("Kurs abgeschlossen!");
   };
@@ -118,7 +103,11 @@ const VideoPlayerPage = ({ category }: { category: AcademyCategory }) => {
             tabValue={activeTab}
             onTabChange={handleTabChange}
           />
-          <ContentVideo description={currentVideo.description} note={currentVideo.note} activeTab={activeTab} />
+          <ContentVideo
+            description={currentVideo.description}
+            note={currentVideo.note}
+            activeTab={activeTab}
+          />
         </div>
         <div className="lg:col-span-4 mt-6 lg:mt-0 hidden lg:flex flex-col space-y-4">
           <ProgressBar progress={progress} />

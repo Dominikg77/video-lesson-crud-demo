@@ -91,7 +91,7 @@ export const mockSections: AcademySection[] = [
             },
             {
                 id: crypto.randomUUID(),
-                orderId: 1,
+                orderId: 2,
                 sectionId: "scalping-basics",
                 title: "Mein Trading-Workspace: Monitore, Tools und ATAS Einstellungen auf Deutsch.",
                 description: "Eugen, wie sieht der perfekte Trading-Workspace aus für Daytrader?“",

@@ -1,5 +1,11 @@
-const Test = () => {
-  return <>Page Content</>;
+import Dashboard from "./dashboard/page";
+
+const HomePage = () => {
+  return (
+    <>
+      <Dashboard />
+    </>
+  );
 };
 
-export default Test;
+export default HomePage;

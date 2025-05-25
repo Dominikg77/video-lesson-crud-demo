@@ -1,5 +1,5 @@
 "use client";
-import { AcademySection, MockDataAcademy } from "./academy-type";
+import { AcademyCategory, AcademySection, MockDataAcademy } from "./academy-type";
 
 export const STORAGE_KEY_ACADEMY_CONTENT = "academy_content";
 
@@ -14,6 +14,27 @@ export const AcademyLocalStorageService = {
     getSections: (): AcademySection[] => {
         const raw = localStorage.getItem(STORAGE_KEY_ACADEMY_CONTENT);
         return raw ? JSON.parse(raw) : [];
+    },
+
+
+    getSectionsByCategorySorted: (category: AcademyCategory, isLiveFilter: boolean = false): AcademySection[] => {
+        const sections: AcademySection[] = AcademyLocalStorageService.getSections()
+
+        // Filtern nach Kategorie
+        const filtered = sections.filter(section => section.category === category);
+
+        // Falls Live-Filter aktiv ist, filtere Videos innerhalb jeder Section
+        const withLiveFilter = isLiveFilter
+            ? filtered
+                .map(section => ({
+                    ...section,
+                    videos: section.videos.filter(video => video.isLive),
+                }))
+                .filter(section => section.videos.length > 0)
+            : filtered;
+
+        // Sortieren nach orderId
+        return withLiveFilter.sort((a, b) => a.orderId - b.orderId);
     },
 
 

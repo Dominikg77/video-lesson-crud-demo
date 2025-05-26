@@ -28,6 +28,7 @@ import { Home } from "lucide-react";
 import Link from "next/link";
 import { PrimaryMenu } from "./selection/primary-menu";
 import { primaryMenu } from "./data/primaryMenu";
+import Image from "next/image";
 
 // Beispiel-Nutzerdaten (später aus Auth/Backend holen)
 const data = {
@@ -44,29 +45,27 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       {/* Kopfbereich: Rollenwahl */}
       <SidebarHeader>
-        <RoleSwitcher roles={roles} />
+        <SidebarMenuButton asChild tooltip="Dashboard">
+          <span>
+            <Link href="/dashboard" passHref legacyBehavior>
+              <span className="flex items-center gap-2">
+                {/* <Home className="w-5 h-5" /> */}
+                <Image
+                  src="/images/logo.png"
+                  alt="Logo"
+                  width={0}
+                  height={0}
+                  className="h-6 w-auto object-contain"
+                  sizes="(max-width: 768px) 100vw, 200px"
+                />
+                {/* <span>Dashboard</span> */}
+              </span>
+            </Link>
+          </span>
+        </SidebarMenuButton>
       </SidebarHeader>
       {/* Hauptinhalt: Navigationsgruppen und weitere Abschnitte */}
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip="Dashboard">
-                {/* Dashboard-Link mit Icon */}
-                {/* TODO: Hier könnte das Logo stehen */}
-
-                <span>
-                  <Link href="/dashboard" passHref legacyBehavior>
-                    <span className="flex items-center gap-2">
-                      <Home className="w-5 h-5" />
-                      <span>Dashboard</span>
-                    </span>
-                  </Link>
-                </span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarGroup>
         {/* Primäre Bereiche (z. B. Teams, Projekte), dynamisch aus Daten */}
         <PrimaryMenu title="Deine Bereiche" items={primaryMenu} />
         {/* Extra-Bereiche & Tools */}

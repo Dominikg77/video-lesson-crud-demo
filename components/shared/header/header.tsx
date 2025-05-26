@@ -59,14 +59,15 @@ const Header = () => {
         <div className="flex items-center gap-2">
           <SidebarTrigger />
           {/* Logo anzeigen */}
-          <Image
+          {/* <Image
             src="/images/logo.png"
             alt="Logo"
             width={0}
             height={0}
             className="h-6 w-auto object-contain"
             sizes="(max-width: 768px) 100vw, 200px"
-          />
+          /> */}
+          <span>Education</span>
         </div>
         {/* Breadcrumb: nur auf grösseren Bildschirmen (>=576px, also ab sm) anzeigen */}
         {breadcrumbs.length > 0 && <span className="ml-2 hidden sm:flex items-center text-sm text-gray-500">{breadcrumbs}</span>}

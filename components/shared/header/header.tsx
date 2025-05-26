@@ -8,7 +8,6 @@ import { SidebarTrigger } from "../../ui/sidebar";
 import ModeToggle from "./mode-toggle";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 
 /**
  * Wandelt URL-Segmente in sprechende Namen um.

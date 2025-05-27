@@ -8,7 +8,6 @@
     "analyze": "cross-env ANALYZE=true next build",
     "start": "next start",
     "lint": "next lint"
-    
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",

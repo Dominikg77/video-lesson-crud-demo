@@ -52,7 +52,9 @@ export function PrimaryMenu({ title, items }: { title: string; items: PrimaryMen
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon />}
-                  <span className={item.isDisabled ? "text-gray-700" : ""}>{item.title}</span>
+                  <span className={item.isDisabled ? "text-gray-900 opacity-50 cursor-not-allowed dark:text-gray-500" : ""}>
+                    {item.title}
+                  </span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
@@ -66,9 +68,9 @@ export function PrimaryMenu({ title, items }: { title: string; items: PrimaryMen
                             className={[
                               "flex items-center px-2 py-1 rounded transition-colors duration-150",
                               pathname === subItem.url
-                                ? "text-blue-600 font-bold bg-sidebar-accent/50"
+                                ? "text-primary font-bold bg-sidebar-accent/50"
                                 : subItem.isDisabled
-                                ? "text-gray-700 cursor-not-allowed"
+                                ? "text-gray-900 opacity-50 cursor-not-allowed dark:text-gray-500"
                                 : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground cursor-pointer",
                             ].join(" ")}>
                             {subItem.title}

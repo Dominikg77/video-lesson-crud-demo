@@ -39,7 +39,7 @@ const Header = () => {
       <span key={href} className="flex items-center">
         {!isLast ? (
           <>
-            <Link href={href} className="text-blue-600 hover:underline">
+            <Link href={href} className="text-primary hover:underline">
               {prettify(segment)}
             </Link>
             <span className="mx-2 text-gray-400">/</span>

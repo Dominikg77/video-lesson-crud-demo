@@ -6,14 +6,7 @@
  */
 
 import * as React from "react";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarMenuButton,
-  SidebarRail,
-} from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenuButton, SidebarRail } from "@/components/ui/sidebar";
 import { additionalSections } from "./data/additionalSections";
 import { backOffice } from "./data/backOffice";
 import { AdditionalSection } from "./selection/additional-section";
@@ -43,16 +36,24 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           <span>
             <Link href="/dashboard" passHref legacyBehavior>
               <span className="flex items-center gap-2">
-                {/* <Home className="w-5 h-5" /> */}
+                {/* Light Theme Logo */}
                 <Image
-                  src="/images/logo.png"
-                  alt="Logo"
+                  src="/images/Logo2.jpg"
+                  alt="Logo Light"
                   width={0}
                   height={0}
-                  className="h-6 w-auto object-contain"
+                  className="h-6 w-auto object-contain dark:hidden"
                   sizes="(max-width: 768px) 100vw, 200px"
                 />
-                {/* <span>Dashboard</span> */}
+                {/* Dark Theme Logo */}
+                <Image
+                  src="/images/logo.png"
+                  alt="Logo Dark"
+                  width={0}
+                  height={0}
+                  className="h-6 w-auto object-contain hidden dark:block"
+                  sizes="(max-width: 768px) 100vw, 200px"
+                />
               </span>
             </Link>
           </span>

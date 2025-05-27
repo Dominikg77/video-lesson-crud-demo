@@ -20,7 +20,14 @@ export function AdditionalSection({ title, additionalSections }: { title: string
         {additionalSections.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild tooltip={item.name}>
-              <span className={pathname === item.url ? "text-blue-600 font-bold" : item.isDisabled ? "text-gray-700" : ""}>
+              <span
+                className={
+                  pathname === item.url
+                    ? "text-primary font-bold"
+                    : item.isDisabled
+                    ? "text-gray-900 opacity-50 cursor-not-allowed dark:text-gray-500"
+                    : ""
+                }>
                 <Link href={item.url} className="flex items-center gap-2">
                   <item.icon />
                   <span>{item.name}</span>

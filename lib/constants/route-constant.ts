@@ -20,3 +20,9 @@ export const BackOfficeRoutes = {
     backOffice: baseBackOffice,
     academy: `${baseBackOffice}/academy`,
 };
+
+const toolsLinksSoftware = "/tools-software";
+export const ToolsSoftwareRoutes = {
+    toolsSoftware: toolsLinksSoftware,
+    financialCalendar: `${toolsLinksSoftware}/financialCalendar`,
+};

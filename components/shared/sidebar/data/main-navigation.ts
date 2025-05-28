@@ -6,7 +6,7 @@ import {
   PencilRuler,
   Star,
 } from "lucide-react"
-import { IntraDayRoutes, ScalpingRoutes } from "@/lib/constants/route-constant"
+import { IntraDayRoutes, ScalpingRoutes, ToolsSoftwareRoutes } from "@/lib/constants/route-constant"
 import { NavigationMenuSection } from "./sidebar.type"
 
 export const mainMenuNavigation: NavigationMenuSection[] = [
@@ -65,10 +65,9 @@ export const mainMenuNavigation: NavigationMenuSection[] = [
     title: "Tools",
     url: "#",
     icon: PencilRuler,
-    isDisabled: true,
+    isDisabled: false,
     items: [
-      { title: "Wirtschaftskalender", url: "#", isDisabled: true, },
-      { title: "Ferienkalender", url: "#", isDisabled: true, },
+      { title: "Wirtschaftskalender & Ferienkalender", url: ToolsSoftwareRoutes.financialCalendar, isDisabled: false, },
       { title: "Aktien-Screener", url: "#", isDisabled: true, },
       { title: "Aktien-Headmap", url: "#", isDisabled: true, },
     ],

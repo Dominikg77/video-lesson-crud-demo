@@ -1,7 +1,12 @@
+import { AcademyProgressPage } from "@/components/students/academyProgressPage";
+import { allCourses } from "@/components/students/academyProgressPage/data/all-courses";
+
 const IntraDay = () => {
   return (
     <>
-      <h1>Info Page für Intraday</h1>
+      {/* Show if User has Intraday, else show info Page */}
+      <p>Dummy Page</p>
+      <AcademyProgressPage course={allCourses.intraday} />
     </>
   );
 };

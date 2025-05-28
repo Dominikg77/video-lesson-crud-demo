@@ -16,7 +16,7 @@ export const mainMenuNavigation: NavigationMenuSection[] = [
     icon: Activity,
     isDisabled: false,
     items: [
-      { title: "Info", url: "#", isDisabled: true, },
+      { title: "Info", url: IntraDayRoutes.intraDayInfo, isDisabled: false, },
       { title: "Academy", url: IntraDayRoutes.academy, isDisabled: false, },
       { title: "Lessons", url: "#", isDisabled: true, },
       { title: "Voice Over", url: "#", isDisabled: true, },
@@ -31,7 +31,7 @@ export const mainMenuNavigation: NavigationMenuSection[] = [
     icon: Zap,
     isDisabled: false,
     items: [
-      { title: "Info", url: "#", isDisabled: true, },
+      { title: "Info", url: ScalpingRoutes.scalpingInfo, isDisabled: false, },
       { title: "Academy", url: ScalpingRoutes.academy, isDisabled: false, },
       { title: "Lessons", url: "#", isDisabled: true, },
       { title: "Voice Over", url: "#", isDisabled: true, },

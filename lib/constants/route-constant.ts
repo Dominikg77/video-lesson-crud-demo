@@ -2,7 +2,7 @@
 const baseIntraDay = "/intraday";
 
 export const IntraDayRoutes = {
-    intraDay: baseIntraDay,
+    intraDayInfo: baseIntraDay,
     academy: `${baseIntraDay}/academy`,
 };
 
@@ -10,7 +10,7 @@ export const IntraDayRoutes = {
 const baseScalping = "/scalping";
 
 export const ScalpingRoutes = {
-    scalping: baseScalping,
+    scalpingInfo: baseScalping,
     academy: `${baseScalping}/academy`,
 };
 

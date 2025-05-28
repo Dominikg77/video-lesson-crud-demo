@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { NavigationMenuSection } from "../data/sidebar.type";
 
 export function NavigationSection({
@@ -21,6 +21,21 @@ export function NavigationSection({
 }) {
   const pathname = usePathname();
 
+  // Offen-Status für jede Gruppe
+  const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
+
+  // Initial öffnet die passenden Gruppen zur aktuellen Route
+  useEffect(() => {
+    const newOpenItems: Record<string, boolean> = {};
+    items.forEach((section) => {
+      newOpenItems[section.title] =
+        section.items?.some(
+          (subItem) => pathname === subItem.url || pathname.startsWith(subItem.url)
+        ) ?? false;
+    });
+    setOpenItems(newOpenItems);
+  }, [pathname, items]);
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{title}</SidebarGroupLabel>
@@ -29,12 +44,20 @@ export function NavigationSection({
           const isActive = pathname === section.url;
           const isDisabled = section.isDisabled;
 
-          // Falls Items vorhanden sind – Collapsible anzeigen
           if (section.items && section.items.length > 0) {
-            return <CollapsibleSection key={section.title} section={section} pathname={pathname} />;
+            return (
+              <CollapsibleSection
+                key={section.title}
+                section={section}
+                pathname={pathname}
+                open={!!openItems[section.title]}
+                setOpen={(isOpen) =>
+                  setOpenItems((prev) => ({ ...prev, [section.title]: isOpen }))
+                }
+              />
+            );
           }
 
-          // Einzelner Link
           return (
             <SidebarMenuItem key={section.title}>
               <SidebarMenuButton asChild tooltip={section.title}>
@@ -64,12 +87,14 @@ export function NavigationSection({
 function CollapsibleSection({
   section,
   pathname,
+  open,
+  setOpen,
 }: {
   section: NavigationMenuSection;
   pathname: string;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }) {
-  const [open, setOpen] = useState(false);
-
   return (
     <>
       <SidebarMenuItem>

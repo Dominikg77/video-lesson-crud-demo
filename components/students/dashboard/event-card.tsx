@@ -2,7 +2,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { Badge } from "@/components/ui/badge";
 import { Clock } from "lucide-react";
 import Link from "next/link";
-import { EventItem } from "./dashboard-data.model";
+import { EventItem } from "./data/dashboard-data.model";
 
 interface EventCardProps {
   data: EventItem;

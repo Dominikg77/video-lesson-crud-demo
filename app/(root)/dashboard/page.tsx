@@ -5,8 +5,8 @@
  * Dashboard: https://v0.dev/chat/custom-dashboard-design-RmvgiF118dg
  * */
 
-import { eventItems, tradingCategories } from "@/components/students/dashboard/dashboard-data";
 import { DashboardHeader } from "@/components/students/dashboard/dashboard-header";
+import { eventItems, tradingCategories } from "@/components/students/dashboard/data/dashboard-data";
 import { EventCard } from "@/components/students/dashboard/event-card";
 import { SectionHeader } from "@/components/students/dashboard/section-header";
 import { TradingCategoryCard } from "@/components/students/dashboard/trading-category-card";

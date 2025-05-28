@@ -20,7 +20,7 @@ export const tradingCategories: TradingCategory[] = [
     icon: TrendingUp,
     color: "bg-blue-500",
     isActive: true,
-    link: IntraDayRoutes.academy,
+    link: IntraDayRoutes.intraDayInfo,
   },
   {
     title: "Scalping",
@@ -29,7 +29,7 @@ export const tradingCategories: TradingCategory[] = [
     icon: Zap,
     color: "bg-yellow-500",
     isActive: true,
-    link: ScalpingRoutes.academy,
+    link: ScalpingRoutes.scalpingInfo,
   },
   {
     title: "Addon Wissen",
@@ -46,7 +46,7 @@ export const tradingCategories: TradingCategory[] = [
       "Dank unserer engen Zusammenarbeit mit unseren Partnern ATAS und DxFeed ermöglichen wir dir exklusive Konditionen für deine Trading-Praxis.",
     icon: Target,
     color: "bg-green-500",
-    isActive: true,
+    isActive: false,
     link: "#",
   },
   {
@@ -55,7 +55,7 @@ export const tradingCategories: TradingCategory[] = [
       "Verwandle dein Wissen in echte Ergebnisse: Handle mit unserem Kapital und profitiere von flexiblen Regeln für dein $100k-Konto bei unserem hauseigenen Fremdkapitalanbieter.",
     icon: Building2,
     color: "bg-indigo-500",
-    isActive: true,
+    isActive: false,
     link: "#",
   },
   {

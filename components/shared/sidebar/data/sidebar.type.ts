@@ -15,27 +15,18 @@ export interface Role {
 }
 
 
-export interface PrimaryMenuSection {
+
+
+export interface NavigationMenuSection {
     title: string
     url: string
     icon: ComponentType<SVGProps<SVGSVGElement>>
-    items: MenuItem[]
+    items?: MenuItem[]
     isDisabled: boolean,
-    isDefaultOpen?: boolean
 
 }
 export interface MenuItem {
     title: string
     url: string
     isDisabled: boolean
-}
-
-/* Extra Section / Back Office */
-
-export interface SectionItem {
-    name: string
-    url: string
-    icon: ComponentType<SVGProps<SVGSVGElement>>
-    isDisabled: boolean,
-
 }

@@ -1,26 +1,28 @@
 import {
   Activity,
   Zap,
-  Users,
   Layers,
   Link,
   PencilRuler,
   Star,
 } from "lucide-react"
 import { IntraDayRoutes, ScalpingRoutes } from "@/lib/constants/route-constant"
-import { PrimaryMenuSection } from "./sidebar.type"
+import { NavigationMenuSection } from "./sidebar.type"
 
-export const primaryMenu: PrimaryMenuSection[] = [
+export const mainMenuNavigation: NavigationMenuSection[] = [
   {
     title: "Intraday",
     url: "#",
     icon: Activity,
     isDisabled: false,
     items: [
+      { title: "Info", url: "#", isDisabled: true, },
       { title: "Academy", url: IntraDayRoutes.academy, isDisabled: false, },
       { title: "Lessons", url: "#", isDisabled: true, },
       { title: "Voice Over", url: "#", isDisabled: true, },
       { title: "Performance Guide", url: "#", isDisabled: true, },
+      { title: "Webinar Aufzeichnung", url: "#", isDisabled: true, },
+      { title: "Mentor Calls", url: "#", isDisabled: true, },
     ],
   },
   {
@@ -29,19 +31,10 @@ export const primaryMenu: PrimaryMenuSection[] = [
     icon: Zap,
     isDisabled: false,
     items: [
+      { title: "Info", url: "#", isDisabled: true, },
       { title: "Academy", url: ScalpingRoutes.academy, isDisabled: false, },
       { title: "Lessons", url: "#", isDisabled: true, },
       { title: "Voice Over", url: "#", isDisabled: true, },
-    ],
-  },
-  {
-    title: "Masterclass",
-    url: "#",
-    icon: Users,
-    isDisabled: true,
-    items: [
-      { title: "Webinar Aufzeichnung", url: "#", isDisabled: true, },
-      { title: "Mentor Calls", url: "#", isDisabled: true, },
     ],
   },
   {

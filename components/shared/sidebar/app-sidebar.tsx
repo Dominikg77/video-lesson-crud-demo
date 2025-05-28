@@ -7,15 +7,13 @@
 
 import * as React from "react";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenuButton, SidebarRail } from "@/components/ui/sidebar";
-import { additionalSections } from "./data/additionalSections";
-import { backOffice } from "./data/backOffice";
-import { AdditionalSection } from "./selection/additional-section";
-import { BackOfficeSection } from "./selection/back-office-section";
 import { NavUser } from "./selection/nav-user";
 import Link from "next/link";
-import { PrimaryMenu } from "./selection/primary-menu";
-import { primaryMenu } from "./data/primaryMenu";
 import Image from "next/image";
+import { NavigationSection } from "./selection/navigation-section";
+import { featureNavigation } from "./data/feature-navigation";
+import { mainMenuNavigation } from "./data/main-navigation";
+import { backOfficeNavigation } from "./data/backOffice-navigation";
 
 // Beispiel-Nutzerdaten (später aus Auth/Backend holen)
 const data = {
@@ -62,11 +60,11 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       {/* Hauptinhalt: Navigationsgruppen und weitere Abschnitte */}
       <SidebarContent>
         {/* Primäre Bereiche (z. B. Teams, Projekte), dynamisch aus Daten */}
-        <PrimaryMenu title="Deine Bereiche" items={primaryMenu} />
+        <NavigationSection title="Deine Bereiche" items={mainMenuNavigation} />
         {/* Extra-Bereiche & Tools */}
-        <AdditionalSection title="Extras & Tools" additionalSections={additionalSections} />
+        <NavigationSection title="Extras & Tools" items={featureNavigation} />
         {/* Back Office Bereich */}
-        <BackOfficeSection title="Back Office" backOfficeSection={backOffice} />
+        <NavigationSection title="Back Office" items={backOfficeNavigation} />
       </SidebarContent>
       {/* Footer: Nutzer-Avatar und Menü */}
       <SidebarFooter>

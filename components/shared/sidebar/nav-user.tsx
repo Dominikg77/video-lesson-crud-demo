@@ -17,7 +17,7 @@ import {
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles, User } from "lucide-react";
 import { RoleSwitcher } from "./role-switcher";
-import { roles } from "../data/roles.data";
+import { roles } from "./data/roles.data";
 
 export function NavUser({
   user,

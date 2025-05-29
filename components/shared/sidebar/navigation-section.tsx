@@ -10,7 +10,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import type { NavigationMenuSection } from "../data/sidebar.type";
+import { NavigationMenuSection } from "./data/sidebar.type";
 
 export function NavigationSection({
   title,

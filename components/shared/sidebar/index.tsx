@@ -7,13 +7,13 @@
 
 import * as React from "react";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenuButton, SidebarRail } from "@/components/ui/sidebar";
-import { NavUser } from "./selection/nav-user";
 import Link from "next/link";
 import Image from "next/image";
-import { NavigationSection } from "./selection/navigation-section";
 import { featureNavigation } from "./data/feature-navigation";
 import { mainMenuNavigation } from "./data/main-navigation";
 import { backOfficeNavigation } from "./data/backOffice-navigation";
+import { NavigationSection } from "./navigation-section";
+import { NavUser } from "./nav-user";
 
 // Beispiel-Nutzerdaten (später aus Auth/Backend holen)
 const data = {

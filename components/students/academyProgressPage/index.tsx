@@ -25,7 +25,7 @@ export function AcademyProgressPage({ course }: AcademyProgressPageProps) {
   };
 
   return (
-    <main className="w-full max-w-[2400px] mx-auto px-2 sm:px-6 lg:px-8 py-8">
+    <main className="py-8">
       <ProgressCard progress={course.progress} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full">

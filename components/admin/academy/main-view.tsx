@@ -47,7 +47,7 @@ export const MainViewAcademyEditor = ({ categories }: MainViewAcademyEditorProps
   };
 
   return (
-    <div className="relative min-h-screen">
+    <div className="min-h-screen">
       {/* Dialog für Hinzufügen/Bearbeiten */}
       <EditAddDialog open={editDialogOpen} onOpenChange={handleDialogOpenChange} videoId={editVideoId} />
 

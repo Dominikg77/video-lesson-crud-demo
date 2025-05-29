@@ -118,7 +118,7 @@ const VideoPlayerPage: React.FC<{ category: AcademyCategory }> = ({ category }) 
 
   // --- Fallback: Zeige Hinweis, falls keine Daten geladen wurden ---
   if (sections.length === 0 || videoStates.length === 0) {
-    return <div className="w-full max-w-[2400px] mx-auto p-4">Keine Daten verfügbar</div>;
+    return <span>Keine Daten verfügbar</span>;
   }
 
   // --- Rendering der eigentlichen Seite ---
@@ -128,7 +128,7 @@ const VideoPlayerPage: React.FC<{ category: AcademyCategory }> = ({ category }) 
   const isLastVideo = currentVideoIdx === videoStates.length - 1;
 
   return (
-    <div className="w-full max-w-[2400px] mx-auto p-4 space-y-4">
+    <>
       {/* Titel des aktuellen Videos */}
       <h1 className=" font-bold  sm:text-xl  lg:text-3xl">{currentVideo.title}</h1>
 
@@ -164,7 +164,7 @@ const VideoPlayerPage: React.FC<{ category: AcademyCategory }> = ({ category }) 
           <VideoList sections={mergedSections} currentVideoIndex={currentVideoIdx} videoList={videoStates} onSelect={handleVideoSelect} />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

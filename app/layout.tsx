@@ -15,9 +15,8 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { APP_DESCRIPTION, APP_NAME } from "@/lib/constants/constants";
 import { AppInit } from "./app-init";
 import Header from "@/components/shared/header/header";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { AppSidebar } from "@/components/shared/sidebar";
-
 
 // Globale Metadaten für die Seite (z.B. für SEO)
 export const metadata: Metadata = {
@@ -52,7 +51,7 @@ export default function RootLayout({
                 {/* Obere Navigationsleiste, z.B. mit Breadcrumbs oder User-Menü */}
                 <Header />
                 {/* Seiteninhalt: Hier werden die Seiten gerendert */}
-                <div className="p-6">{children}</div>
+                <div className="px-8 md:px-10 py-6 md:py-10 w-full max-w-[2400px] mx-auto">{children}</div>
               </main>
             </div>
           </SidebarProvider>

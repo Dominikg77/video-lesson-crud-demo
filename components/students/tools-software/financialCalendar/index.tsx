@@ -1,30 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { TrendingUp } from "lucide-react"
-import { newsData } from "./data/newsData"
-import { calendarEvents } from "./data/eventsData"
-import { FilterSection } from "./filters/FilterSection"
-import { NewsTable } from "./tables/NewsTable"
-import { EventsTable } from "./tables/EventsTable"
-import { useFilters } from "@/hooks/useFilters"
-
+import { useState } from "react";
+import { TrendingUp } from "lucide-react";
+import { newsData } from "./data/newsData";
+import { calendarEvents } from "./data/eventsData";
+import { FilterSection } from "./filters/FilterSection";
+import { NewsTable } from "./tables/NewsTable";
+import { EventsTable } from "./tables/EventsTable";
+import { useFilters } from "@/hooks/useFilters";
 
 export default function FinanceDashboard() {
-  const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const {
-    filters,
-    filteredNews,
-    filteredEvents,
-    updateFilters,
-    handleCountryChange,
-    handleImportanceChange,
-    handleCategoryChange,
-  } = useFilters(newsData, calendarEvents)
+  const { filters, filteredNews, filteredEvents, updateFilters, handleCountryChange, handleImportanceChange, handleCategoryChange } =
+    useFilters(newsData, calendarEvents);
 
   return (
-    <div className="w-full max-w-[2400px]  mx-auto p-4 md:p-6 space-y-6">
+    <div className="space-y-6">
       <div className="flex items-center gap-2 mb-4 md:mb-6">
         <TrendingUp className="h-6 w-6" />
         <h1 className="text-2xl md:text-3xl font-bold">News & Events Dashboard</h1>
@@ -45,5 +37,5 @@ export default function FinanceDashboard() {
         <EventsTable events={filteredEvents} />
       </div>
     </div>
-  )
+  );
 }

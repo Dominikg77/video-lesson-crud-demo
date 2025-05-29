@@ -67,7 +67,7 @@ export const mainMenuNavigation: NavigationMenuSection[] = [
     icon: PencilRuler,
     isDisabled: false,
     items: [
-      { title: "Wirtschaftskalender & Ferienkalender", url: ToolsSoftwareRoutes.financialCalendar, isDisabled: false, },
+      { title: "Wirtschaftskalender", url: ToolsSoftwareRoutes.financialCalendar, isDisabled: false, },
       { title: "Aktien-Screener", url: "#", isDisabled: true, },
       { title: "Aktien-Headmap", url: "#", isDisabled: true, },
     ],
